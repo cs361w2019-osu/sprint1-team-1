@@ -62,12 +62,12 @@ public class Board {
 	 */
 	public Result attack(int x, char y) {
 		Result attackRes = new Result();
-		attackRes.setResult(AtackStatus.MISS);
+		attackRes.setResult(AttackStatus.MISS);
 		attackRes.setLocation(new Square(x,y));
 
 		// Bounds Checking
 		if(x < 0 || x > 10 || y < 'A' || y > 'J'){
-			attackRes.setResult(AtackStatus.INVALID);
+			attackRes.setResult(AttackStatus.INVALID);
 			return attackRes;
 		}
 
@@ -75,7 +75,7 @@ public class Board {
 		// Make sure you dont click the same twice
 		for (Result a : attacks) {
 			if (attackRes.getLocation().isEqual(a.getLocation())) {
-				attackRes.setResult(AtackStatus.INVALID);
+				attackRes.setResult(AttackStatus.INVALID);
 				return attackRes;
 			}
 		}
@@ -85,11 +85,11 @@ public class Board {
 		for (int i = 0; i < placedShips.size(); i++) {
 			for (int j = 0; j < placedShips.get(i).getHealthSquares().size(); j++) {
 				if (attackRes.getLocation().isEqual(placedShips.get(i).getHealthSquares().get(j))) {
-					attackRes.setResult(AtackStatus.HIT);
+					attackRes.setResult(AttackStatus.HIT);
 					placedShips.get(i).getHealthSquares().remove(j);
 				}
 				if ( placedShips.get(i).getHealthSquares().size() == 0 ) {
-					attackRes.setResult(AtackStatus.SUNK);
+					attackRes.setResult(AttackStatus.SUNK);
 					placedShips.get(i).sinkShip();
 				}
 
@@ -97,7 +97,7 @@ public class Board {
 		}
 
 		if ( !doesPlayerHaveShipsAlive() ){
-			attackRes.setResult(AtackStatus.SURRENDER);
+			attackRes.setResult(AttackStatus.SURRENDER);
 		}
 
 		attacks.add(attackRes);
