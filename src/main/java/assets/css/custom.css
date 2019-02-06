@@ -79,7 +79,7 @@ td:hover {
 
 .modal-dialog {
     width: auto;
-    max-width: 600px;
+    max-width: 500px;
     min-width: 350px;
     min-height: 300px;
     margin: 40px auto;
@@ -90,11 +90,12 @@ td:hover {
 .modal-header {
     position: relative;
     padding: 10px 20px;
+    text-align: center;
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 28px;
+    font-size: 36px;
 }
 
 #modal-close {
@@ -110,18 +111,53 @@ td:hover {
 
 .modal-body {
     padding: 20px;
+    margin: auto;
+    text-align: center;
+}
+
+.modal-body div {
+    padding: 10px;
+}
+
+.checkbox-div {
+    font-size: 26px;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+    padding-bottom: 2px;
+    cursor: pointer;
 }
 
 .modal-body button {
+    max-width: 280px;
+    min-width: 280px;
     font-family: "impact", serif;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 26px;
+    cursor: pointer;
 }
 
-#modal-cancel {
+.modal-body button:hover {
+    filter: brightness(75%);
+}
+
+#modal-close {
     margin-right: 20px;
-    color: #333;
-    background-color: #fff;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    background-color: #000;
+    border: 1px solid #ababab;
+    border-radius: 5px;
+    font-weight: lighter;
+    cursor: pointer;
 }
 
-#modal-cancel:hover {
-    background-color: #eee;
+#modal-close:hover {
+    background-color: #646464;
 }
