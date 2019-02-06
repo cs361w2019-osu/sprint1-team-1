@@ -43,9 +43,41 @@ function redrawGrid() {
         return;
     }
 
+
+    var i;
+    var j;
+    for(i = 0; i < game.playersBoard.ships.length; i++) {
+      var currShip = game.playersBoard.ships[i];
+      for(j = 0; j < currShip.occupiedSquares.length; j++) {
+        var square = currShip.occupiedSquares[j];
+        var image;
+        if(j == 0) {
+          image = document.createElement("img");
+          image.src = "/assets/images/ship_tip.png";
+        } else if (j == currShip.occupiedSquares.length - 1) {
+          image = document.createElement("img");
+          image.src = "/assets/images/flag_tip_white.png";
+        } else {
+          image = document.createElement("img");
+          image.src = "/assets/images/ship_middle.png";
+        }
+
+        console.log("Is vertical:", currShip.certical);
+        if(currShip.vertical == false) {
+            image.classList.add("rotate");
+            square.placed = true;
+        }
+
+        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      }
+    }
+
+    /*
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-}));
+
+    }));
+    */
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
 }
@@ -73,6 +105,7 @@ function cellClick() {
         //console.log(game, shipType,row, col, vertical);
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
+            game.playersBoard[game.playersBoard.length - 1].vertical = vertical;
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {

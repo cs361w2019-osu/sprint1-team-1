@@ -14,9 +14,11 @@ public class Ship {
 
 	private String kind;
 	private int length;
+	private boolean vertical;
 
 	public Ship() {
 		this.alive = true;
+		this.vertical = false;
 	}
 	
 	public Ship(String kind) {
@@ -30,6 +32,7 @@ public class Ship {
 		}
 
 		this.alive = true;
+		this.vertical = false;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -66,5 +69,9 @@ public class Ship {
 
 	public void sinkShip(){
 		this.alive = false;
+	}
+
+	public boolean isVertical() {
+		return this.vertical;
 	}
 }
