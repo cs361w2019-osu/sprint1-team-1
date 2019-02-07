@@ -50,6 +50,7 @@ function redrawGrid() {
 
 var oldListener;
 function registerCellListener(f) {
+    showHideShipModal(true);
     let el = document.getElementById("player");
     for (i=0; i<10; i++) {
         for (j=0; j<10; j++) {
@@ -125,6 +126,17 @@ function place(size) {
     }
 }
 
+function showHideShipModal(doHide){
+    if(!doHide) {
+        document.getElementById("modal-backdrop").classList.remove("hidden");
+        document.getElementById("start-phase-modal").classList.remove("hidden");
+    }
+    else if(doHide){
+        document.getElementById("modal-backdrop").classList.add("hidden");
+        document.getElementById("start-phase-modal").classList.add("hidden");
+    }
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -139,6 +151,9 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+    });
+    document.getElementById("place-ship").addEventListener("click", function(e) {
+        showHideShipModal(false);
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
