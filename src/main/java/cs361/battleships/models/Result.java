@@ -1,15 +1,15 @@
 package cs361.battleships.models;
 
 public class Result {
-	private AtackStatus status;
+	private AttackStatus status;
 	private Ship ship;
 	private Square loc;
 
-	public AtackStatus getResult() {
+	public AttackStatus getResult() {
 		return this.status;
 	}
 
-	public void setResult(AtackStatus result) {
+	public void setResult(AttackStatus result) {
 		this.status = result;
 	}
 

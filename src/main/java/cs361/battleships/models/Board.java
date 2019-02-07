@@ -61,15 +61,13 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		System.out.println("In Board attack");
 		Result attackRes = new Result();
-		attackRes.setResult(AtackStatus.MISS);
+		attackRes.setResult(AttackStatus.MISS);
 		attackRes.setLocation(new Square(x,y));
 
-		System.out.println("Bound checking...");
 		// Bounds Checking
 		if(x < 0 || x > 10 || y < 'A' || y > 'J'){
-			attackRes.setResult(AtackStatus.INVALID);
+			attackRes.setResult(AttackStatus.INVALID);
 			return attackRes;
 		}
 
@@ -77,37 +75,35 @@ public class Board {
 		// Make sure you dont click the same twice
 		for (Result a : attacks) {
 			if (attackRes.getLocation().isEqual(a.getLocation())) {
-				attackRes.setResult(AtackStatus.INVALID);
+				attackRes.setResult(AttackStatus.INVALID);
 				return attackRes;
 			}
 		}
 
-		System.out.println("Check hit box");
 		// Check if hits enemy ship
 			//If so, does it hit an good part of ship
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < placedShips.size(); i++) {
 			for (int j = 0; j < placedShips.get(i).getHealthSquares().size(); j++) {
 				if (attackRes.getLocation().isEqual(placedShips.get(i).getHealthSquares().get(j))) {
-					attackRes.setResult(AtackStatus.HIT);
+					attackRes.setResult(AttackStatus.HIT);
 					placedShips.get(i).getHealthSquares().remove(j);
 				}
 				if ( placedShips.get(i).getHealthSquares().size() == 0 ) {
-					attackRes.setResult(AtackStatus.SUNK);
+					attackRes.setResult(AttackStatus.SUNK);
 					placedShips.get(i).sinkShip();
 				}
 
 			}
 		}
 
-		System.out.println("Check if surrender");
 		if ( !doesPlayerHaveShipsAlive() ){
-			attackRes.setResult(AtackStatus.SURRENDER);
+			attackRes.setResult(AttackStatus.SURRENDER);
 		}
 
-		System.out.println(attackRes.getResult());
 		attacks.add(attackRes);
 		return attackRes;
 	}
+
 
 
 	public boolean doesPlayerHaveShipsAlive() {
