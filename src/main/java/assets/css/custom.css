@@ -4,16 +4,22 @@
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
+    table-layout: fixed;
 }
 
 .battleGrid tr {
     border: 1px solid black;
-    height: 30px;
+    padding: 0;
+    margin: 0;
 }
 
 .battleGrid td {
     border: 1px solid black;
-    width: 30px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
 }
 
 td:hover {
@@ -40,12 +46,17 @@ td:hover {
     background-color: blue;
 }
 
+.rotate {
+    transform: rotate(-90deg);
+}
 
-
-
-
-
-
+img {
+    border: 0;
+    height: 40px;
+    width: 40px;
+    padding: 0px;
+    margin: 0px;
+}
 
 
 /* Modal Stuff */
