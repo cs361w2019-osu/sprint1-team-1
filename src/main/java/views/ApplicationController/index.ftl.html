@@ -2,24 +2,37 @@
 <@layout.myLayout "Home page">    
 
 
-<h1>The Battleship game</h1>
+<h1>BATTLESHIP</h1>
+<body>
+    <div class="score-container">
+        <div id="left">
+            <div class="ship-score opponent right"></div>
+            <div class="text-score opponent right">
+                <div>Hits:  <span class="opponent hits">0</span></div>
+                <div>Sinks: <span class="opponent sinks">0</span></div>
+            </div>
+        </div>
 
-<table id="opponent" class="battleGrid">
-</table>
+        <div id="right">
+            <div class="ship-score player left"></div>
+            <div class="text-score player left">
+                <div>Hits:  <span class="opponent hits">0</span></div>
+                <div>Sinks: <span class="opponent sinks">0</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table id="opponent" class="opponent battleGrid left">
+        </table>
 
-<table id="player" class="battleGrid">
-</table>
+        <table id="player" class="player battleGrid right">
+        </table>
+    </div>
 
-<ul>
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-</ul>
 
-<script type="text/javascript" src="/assets/game.js"></script>
-<script>
-    initGame();
-</script>
-
+    <script type="text/javascript" src="/assets/game.js"></script>
+    <script>
+        initGame();
+    </script>
 </@layout.myLayout>
+</body>
