@@ -62,11 +62,10 @@ function redrawGrid() {
           image.src = "/assets/images/ship_middle.png";
         }
 
-        console.log("Is vertical:", currShip.certical);
-        if(currShip.vertical == false) {
+        if(currShip.shipVertical == false) {
             image.classList.add("rotate");
-            square.placed = true;
         }
+
 
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
       }
@@ -105,7 +104,7 @@ function cellClick() {
         //console.log(game, shipType,row, col, vertical);
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
-            game.playersBoard[game.playersBoard.length - 1].vertical = vertical;
+            game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
