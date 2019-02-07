@@ -10,8 +10,9 @@
 <table id="player" class="battleGrid">
 </table>
 
-<button type="button" id="place-ship">Place Ship</button>
 <button onclick="location.reload();">Refresh Page</button>
+<button type="button" id="place-ship">Place Ship</button>
+
 
 <div id="modal-backdrop"></div>
 <div id="start-phase-modal">
@@ -24,9 +25,9 @@
         </div>
 
         <div class="modal-body">
-            <div><button id="place_minesweeper">Place Minesweeper</button></div>
-            <div><button id="place_destroyer">Place Destroyer</button></div>
-            <div><button id="place_battleship">Place Battleship</button></div>
+            <div id="place_minesweeper_div"><button id="place_minesweeper">Place Minesweeper</button></div>
+            <div id="place_destroyer_div"><button id="place_destroyer">Place Destroyer</button></div>
+            <div id="place_battleship_div"><button id="place_battleship">Place Battleship</button></div>
 
             <div class="checkbox-div"><input type="checkbox" id="is_vertical">Rotate Placement</input></div>
 

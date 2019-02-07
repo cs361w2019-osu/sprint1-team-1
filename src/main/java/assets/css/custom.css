@@ -73,9 +73,6 @@ td:hover {
     font-family: "impact", serif;
 }
 
-.hidden {
-    display: none;
-}
 
 .modal-dialog {
     width: auto;
@@ -129,6 +126,11 @@ input[type=checkbox] {
     padding-bottom: 2px;
     cursor: pointer;
 }
+.hidden {
+    display: none;
+
+}
+
 
 .modal-body button {
     max-width: 280px;
@@ -141,6 +143,9 @@ input[type=checkbox] {
     font-size: 26px;
     cursor: pointer;
 }
+
+
+
 
 .modal-body button:hover {
     filter: brightness(75%);
