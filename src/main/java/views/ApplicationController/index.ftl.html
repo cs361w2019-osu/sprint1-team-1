@@ -10,12 +10,32 @@
 <table id="player" class="battleGrid">
 </table>
 
-<ul>
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-</ul>
+<button onclick="location.reload();">Refresh Page</button>
+<button type="button" id="place-ship">Place Ship</button>
+
+
+<div id="modal-backdrop"></div>
+<div id="start-phase-modal">
+    <div class="modal-dialog">
+
+        <div class="modal-header">
+            <h3>Place your Ships</h3>
+            <h4>Place 3 ships to start your game.</h4>
+            <!--<button type="button" id="modal-close" class="modal-hide-button">&times;</button>-->
+        </div>
+
+        <div class="modal-body">
+            <div id="place_minesweeper_div"><button id="place_minesweeper">Place Minesweeper</button></div>
+            <div id="place_destroyer_div"><button id="place_destroyer">Place Destroyer</button></div>
+            <div id="place_battleship_div"><button id="place_battleship">Place Battleship</button></div>
+
+            <div class="checkbox-div"><input type="checkbox" id="is_vertical">Rotate Placement</input></div>
+
+        </div>
+    </div>
+</div>
+
+
 
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>

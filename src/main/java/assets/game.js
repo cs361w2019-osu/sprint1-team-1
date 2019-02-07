@@ -3,6 +3,13 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var placedShipsList = [];
+
+var shipList = {
+    MINESWEEPER:2,
+    DESTROYER:3,
+    BATTLESHIP:4
+};
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -50,6 +57,7 @@ function redrawGrid() {
 
 var oldListener;
 function registerCellListener(f) {
+    showHideShipModal(true);
     let el = document.getElementById("player");
     for (i=0; i<10; i++) {
         for (j=0; j<10; j++) {
@@ -63,6 +71,8 @@ function registerCellListener(f) {
     oldListener = f;
 }
 
+
+
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
@@ -71,8 +81,12 @@ function cellClick() {
             game = data;
             redrawGrid();
             placedShips++;
+            placedShipsList.push(shipList[shipType]);
+            console.log(placedShipsList);
+            showHideShipModal(false);
             if (placedShips == 3) {
                 isSetup = false;
+                document.getElementById("place-ship").classList.add("hidden");
                 registerCellListener((e) => {});
             }
         });
@@ -89,6 +103,7 @@ function sendXhr(method, url, data, handler) {
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
             alert("Cannot complete the action");
+            showHideShipModal(false);
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -122,6 +137,32 @@ function place(size) {
             }
             cell.classList.toggle("placed");
         }
+
+    }
+}
+
+function showHideShipModal(doHide){
+    if(!doHide) {
+        document.getElementById("modal-backdrop").classList.remove("hidden");
+        document.getElementById("start-phase-modal").classList.remove("hidden");
+
+        placedShipsList.forEach(function(len){
+            switch (len) {
+                case 2:
+                    document.getElementById("place_minesweeper_div").style.display = "none";
+                    break;
+                case 3:
+                    document.getElementById("place_destroyer_div").style.display = "none";
+                    break;
+                case 4:
+                    document.getElementById("place_battleship_div").style.display = "none";
+                    break;
+            }
+        });
+    }
+    else if(doHide){
+        document.getElementById("modal-backdrop").classList.add("hidden");
+        document.getElementById("start-phase-modal").classList.add("hidden");
     }
 }
 
@@ -139,6 +180,9 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+    });
+    document.getElementById("place-ship").addEventListener("click", function(e) {
+        showHideShipModal(false);
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;

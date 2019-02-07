@@ -39,3 +39,131 @@ td:hover {
 .miss {
     background-color: blue;
 }
+
+
+
+
+
+
+
+
+
+/* Modal Stuff */
+
+
+
+#modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+#start-phase-modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1010;
+    overflow: scroll;
+    font-family: "impact", serif;
+}
+
+
+.modal-dialog {
+    width: auto;
+    max-width: 500px;
+    min-width: 350px;
+    min-height: 300px;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 15px;
+}
+
+.modal-header {
+    position: relative;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 36px;
+}
+
+#modal-close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 24px;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+    margin: auto;
+    text-align: center;
+}
+
+.modal-body div {
+    padding: 10px;
+}
+
+.checkbox-div {
+    font-size: 26px;
+    text-align: center;
+}
+
+input[type=checkbox] {
+    transform: scale(1.5);
+    padding-bottom: 2px;
+    cursor: pointer;
+}
+.hidden {
+    display: none;
+
+}
+
+
+.modal-body button {
+    max-width: 280px;
+    min-width: 280px;
+    font-family: "impact", serif;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+
+
+
+.modal-body button:hover {
+    filter: brightness(75%);
+}
+
+#modal-close {
+    margin-right: 20px;
+    font-size: 20px;
+    color: white;
+    padding: 10px;
+    background-color: #000;
+    border: 1px solid #ababab;
+    border-radius: 5px;
+    font-weight: lighter;
+    cursor: pointer;
+}
+
+#modal-close:hover {
+    background-color: #646464;
+
+}
