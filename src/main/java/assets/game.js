@@ -4,6 +4,11 @@ var game;
 var shipType;
 var vertical;
 var placedShipsList = [];
+var opponentHits = document.getElementById('opponent-hits');
+var opponentSinks = document.getElementById('opponent-sinks');
+var playerHits = document.getElementById('player-hits');
+var playerSinks = document.getElementById('player-sinks');
+
 
 var shipList = {
     MINESWEEPER:2,
@@ -23,20 +28,56 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function incrHits(elementId) {
+    if (elementId === 'opponent') {
+        opponentHits.textContent = parseInt(opponentHits.textContent) + 1;
+    } else if (elementId === 'player') {
+        playerHits.textContent = parseInt(playerHits.textContent) + 1;
+    } else {
+        console.log("elementId for incrHits: ", elementId);
+    }
+}
+
+function incrSinks(elementId) {
+    if (elementId === 'opponent') {
+        opponentSinks.textContent = parseInt(opponentSinks.textContent) + 1;
+    } else if (elementId === 'player') {
+        playerSinks.textContent = parseInt(playerSinks.textContent) + 1;
+    } else {
+        console.log("elementId for incrSinks: ", elementId);
+    }
+}
+
+function checkCounters(board, elementId) {
+    console.log("checking counters");
+    var numAttacks = board.attacks.length;
+    if (numAttacks > 0) {
+        if (board.attacks[numAttacks - 1].result === "HIT") {
+            incrHits(elementId);
+        } else if (board.attacks[numAttacks - 1].result === "SUNK") {
+            console.log("opponent hits ", opponentHits.textContent);
+            console.log("player hits ", playerHits.textContent);
+            incrHits(elementId);
+            incrSinks(elementId);
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
-    if (attack.result === "MISS")
+    if (attack.result === "MISS") {
         className = "miss";
-    else if (attack.result === "HIT")
+    } else if (attack.result === "HIT") {
         className = "hit";
-    else if (attack.result === "SUNK")
-        className = "hit"
-    else if (attack.result === "SURRENDER")
+    } else if (attack.result === "SUNK") {
+        className = "hit";
+    } else if (attack.result === "SURRENDER") {
         alert(surrenderText);
+    }
+
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
 });
-
 }
 
 function redrawGrid() {
@@ -84,6 +125,9 @@ function redrawGrid() {
     */
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
+
+    checkCounters(game.opponentsBoard, "opponent");
+    checkCounters(game.playersBoard, "player")
 }
 
 var oldListener;
