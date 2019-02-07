@@ -72,9 +72,11 @@ function cellClick() {
             game = data;
             redrawGrid();
             placedShips++;
+            showHideShipModal(false);
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+                showHideShipModal(true);
             }
         });
     } else {
