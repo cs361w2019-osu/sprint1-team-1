@@ -5,7 +5,7 @@
 h1 {
     color: #d5d30b;
     background: #060534;
-    font-size: 10em;
+    font-size: 6em;
     font-family: "Impact", serif;
     margin: auto;
     width: 5em;
@@ -13,19 +13,19 @@ h1 {
     padding: 0px 30px;
     text-align: center;
     vertical-align: middle;
-    line-height: 160px;
+    line-height: 1.25em;
 }
 .text-score{
     color: #d5d30b;
     width: 23%;
-    height: 150px;
+    height: 3em;
     font-size: 40px;
-    padding: 10px;
+    padding: 0px;
 
 }
 .ship-score{
     width: 23%;
-    height: 150px;
+    height: 7em;
     border-radius: 10px;
 }
 
@@ -47,7 +47,7 @@ body {
 }
 .table-container{
     /*border: 1px solid white;*/
-    padding: 0px 20em;
+    padding: 0px 10em;
     height: 400px;
     /*background: #d5d30b;*/
 }
@@ -57,8 +57,8 @@ div{
 .score-container{
     /*border: 1px solid white;*/
     /*border: 1px solid #fffc0c;*/
-    padding: 10px 20em;
-    height: 150px;
+    padding: 0px 10em;
+    height: 1em;
 }
 .ship-score{
     border: 3px solid #fffc0c;
@@ -66,13 +66,13 @@ div{
 }
 .battleGrid tr {
     border: 1px solid #0500d5;
-    height: 40px;
+    height: 35px;
 }
 
 .battleGrid td {
     border: 0px solid #0500d5;
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     padding: 0;
     margin: 0;
     display: inline-block;
@@ -108,8 +108,8 @@ td:hover {
 
 img {
     border: 0;
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     padding: 0px;
     margin: 0px;
 }
