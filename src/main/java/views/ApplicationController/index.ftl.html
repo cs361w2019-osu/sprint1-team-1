@@ -4,6 +4,7 @@
 
 <h1>BATTLESHIP</h1>
 <body>
+<main>
     <div class="score-container">
         <div id="left">
             <div class="ship-score opponent right"></div>
@@ -21,13 +22,15 @@
         </div>
     </div>
     <div class="table-container">
-        <table id="player" class="player battleGrid left">
-        </table>
-        <table id="opponent" class="opponent battleGrid right">
-        </table>
+        <div id="left">
+            <table id="opponent" class="opponent battleGrid right"></table>
+        </div>
+        <div id="right">
+            <table id="player" class="player battleGrid left"></table>
+        </div>
     </div>
-
-<button onclick="location.reload();">Refresh Page</button>
+</main>
+<button  onclick="location.reload();">Refresh Page</button>
 <button type="button" id="place-ship">Place Ship</button>
 
 
