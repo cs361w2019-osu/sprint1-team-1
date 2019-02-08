@@ -2,11 +2,6 @@ package cs361.battleships.models;
 
 import org.junit.Test;
 
-import javax.validation.constraints.AssertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class BoardTest {
@@ -104,7 +99,7 @@ public class BoardTest {
         board.placeShip(destroyer, 1, 'B', false);
 
         Result result = board.attack(1, 'B');
-        assertTrue(result.getResult() == AtackStatus.HIT);
+        assertTrue(result.getResult() == AttackStatus.HIT);
     }
 
     @Test
@@ -115,7 +110,7 @@ public class BoardTest {
 
         Result result1 = board.attack(1, 'A');
         Result result2 = board.attack(1, 'D');
-        assertTrue(result1.getResult() == AtackStatus.MISS && result2.getResult() == AtackStatus.MISS);
+        assertTrue(result1.getResult() == AttackStatus.MISS && result2.getResult() == AttackStatus.MISS);
     }
 
     @Test
@@ -128,7 +123,7 @@ public class BoardTest {
 
         board.attack(1, 'B');
         Result result = board.attack(1, 'C');
-        assertTrue(result.getResult() == AtackStatus.SUNK);
+        assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
     @Test
@@ -139,7 +134,7 @@ public class BoardTest {
 
         board.attack(1, 'C');
         Result result = board.attack(1, 'B');
-        assertTrue(result.getResult() == AtackStatus.SURRENDER);
+        assertTrue(result.getResult() == AttackStatus.SURRENDER);
     }
 
 }
