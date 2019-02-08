@@ -179,7 +179,8 @@ function sendXhr(method, url, data, handler) {
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
             alert("Cannot complete the action");
-            showHideShipModal(false);
+            if(placedShips != 3)
+                showHideShipModal(false);
             return;
         }
         handler(JSON.parse(req.responseText));
