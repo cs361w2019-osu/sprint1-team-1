@@ -309,10 +309,13 @@ function cellClick() {
             }
         });
     } else if (usingSonar) {
-        if (sonarUses < parseInt(playerSinks.textContent)) {
+        console.log("sonarUses: ", sonarUses);
+        console.log("playerSinks: ", parseInt(opponentSinks.textContent));
+        if (sonarUses < parseInt(opponentSinks.textContent)) {
             sonarUses++; // increment the number of sonar pulses
             usingSonar = false; // reset using sonar after one pulse
             // Use the Sonar Pulse
+            console.log("You used the sonar");
         } else {
             alert("You must sink a ship before you can use Sonar");
         }

@@ -39,7 +39,7 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
-
+/*
     public Result sonar(Context context, AttackGameAction g) {
         Game game = g.getGame();
         // TODO make sonar function in game
@@ -51,4 +51,5 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
+*/
 }
