@@ -309,10 +309,12 @@ function cellClick() {
             }
         });
     } else if (usingSonar) {
-        if (sonarUses > parseInt(playerSinks.textContent)) {
-            sonarUses++;
-            usingSonar = false;
+        if (sonarUses < parseInt(playerSinks.textContent)) {
+            sonarUses++; // increment the number of sonar pulses
+            usingSonar = false; // reset using sonar after one pulse
             // Use the Sonar Pulse
+        } else {
+            alert("You must sink a ship before you can use Sonar");
         }
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
