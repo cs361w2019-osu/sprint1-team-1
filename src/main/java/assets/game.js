@@ -9,6 +9,8 @@ var opponentSinks = document.getElementById('opponent-sinks');
 var playerHits = document.getElementById('player-hits');
 var playerSinks = document.getElementById('player-sinks');
 var useSonar = document.getElementById('use-sonar');
+var usingSonar = false;
+var sonarUses = 0;
 
 
 var shipList = {
@@ -110,6 +112,7 @@ function missingHealthIndices(ship) {
 }
 
 useSonar.addEventListener('click', function(event) {
+    usingSonar = true;
     // TODO make the next attack a sonar pulse, don't have opponent make an attack
 });
 
@@ -305,6 +308,12 @@ function cellClick() {
                 registerCellListener((e) => {});
             }
         });
+    } else if (usingSonar) {
+        if (sonarUses > parseInt(playerSinks.textContent)) {
+            sonarUses++;
+            usingSonar = false;
+            // Use the Sonar Pulse
+        }
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
