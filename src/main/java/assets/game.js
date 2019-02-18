@@ -8,6 +8,7 @@ var opponentHits = document.getElementById('opponent-hits');
 var opponentSinks = document.getElementById('opponent-sinks');
 var playerHits = document.getElementById('player-hits');
 var playerSinks = document.getElementById('player-sinks');
+var useSonar = document.getElementById('use-sonar');
 
 
 var shipList = {
@@ -107,6 +108,10 @@ function missingHealthIndices(ship) {
     }
     return missingInd;
 }
+
+useSonar.addEventListener('click', function(event) {
+    // TODO make the next attack a sonar pulse, don't have opponent make an attack
+});
 
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
