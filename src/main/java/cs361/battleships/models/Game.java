@@ -30,6 +30,10 @@ public class Game {
         return true;
     }
 
+    public boolean placeSonar(int row, char column) {
+        return playersBoard.placeSonar(row, column);
+    }
+
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
