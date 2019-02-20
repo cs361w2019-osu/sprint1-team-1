@@ -143,6 +143,10 @@ public class Board {
 		return this.attacks;
 	}
 
+	public List<Sonar> getSonars() {
+	    return this.sonars;
+    }
+
 	public void setAttacks(List<Result> attacks) {
 		this.attacks = attacks;
 	}
