@@ -6,7 +6,7 @@ import java.util.List;
 public class Board {
 
 	private List<Ship> placedShips;
-	private List<Square> attacks;
+	private List<Result> attacks;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -60,8 +60,8 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public Square attack(int x, char y) {
-		Square attackRes = new Square();
+	public Result attack(int x, char y) {
+		Result attackRes = new Result();
 		attackRes.setResult(AttackStatus.MISS);
 		attackRes.setLocation(new Square(x,y));
 
@@ -73,8 +73,8 @@ public class Board {
 
 
 		// Make sure you dont click the same twice
-		for (Square a : attacks) {
-			if (attackRes.isEqual(a)) {
+		for (Result a : attacks) {
+			if (attackRes.getLocation().isEqual(a.getLocation())) {
 				attackRes.setResult(AttackStatus.INVALID);
 				return attackRes;
 			}
@@ -84,7 +84,7 @@ public class Board {
 			//If so, does it hit an good part of ship
 		for (int i = 0; i < placedShips.size(); i++) {
 			for (int j = 0; j < placedShips.get(i).getHealthSquares().size(); j++) {
-				if (attackRes.isEqual(placedShips.get(i).getHealthSquares().get(j))) {
+				if (attackRes.getLocation().isEqual(placedShips.get(i).getHealthSquares().get(j))) {
 					attackRes.setResult(AttackStatus.HIT);
 					placedShips.get(i).getHealthSquares().remove(j);
 				}
@@ -122,11 +122,11 @@ public class Board {
 		placedShips = ships;
 	}
 
-	public List<Square> getAttacks() {
+	public List<Result> getAttacks() {
 		return this.attacks;
 	}
 
-	public void setAttacks(List<Square> attacks) {
+	public void setAttacks(List<Result> attacks) {
 		this.attacks = attacks;
 	}
 }

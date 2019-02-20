@@ -98,7 +98,7 @@ public class BoardTest {
         Ship destroyer = new Ship("MINESWEEPER");
         board.placeShip(destroyer, 1, 'B', false);
 
-        Square result = board.attack(1, 'B');
+        Result result = board.attack(1, 'B');
         assertTrue(result.getResult() == AttackStatus.HIT);
     }
 
@@ -108,8 +108,8 @@ public class BoardTest {
         Ship destroyer = new Ship("MINESWEEPER");
         board.placeShip(destroyer, 1, 'B', false);
 
-        Square result1 = board.attack(1, 'A');
-        Square result2 = board.attack(1, 'D');
+        Result result1 = board.attack(1, 'A');
+        Result result2 = board.attack(1, 'D');
         assertTrue(result1.getResult() == AttackStatus.MISS && result2.getResult() == AttackStatus.MISS);
     }
 
@@ -122,7 +122,7 @@ public class BoardTest {
         board.placeShip(destroyer, 3, 'A', false);
 
         board.attack(1, 'B');
-        Square result = board.attack(1, 'C');
+        Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
@@ -133,7 +133,7 @@ public class BoardTest {
         board.placeShip(destroyer, 1, 'B', false);
 
         board.attack(1, 'C');
-        Square result = board.attack(1, 'B');
+        Result result = board.attack(1, 'B');
         assertTrue(result.getResult() == AttackStatus.SURRENDER);
     }
 
