@@ -121,7 +121,7 @@ function markHits(board, elementId, surrenderText) {
         alert(surrenderText);
     }
 
-    document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+    document.getElementById(elementId).rows[attack.row-1].cells[attack.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
 
 
 });

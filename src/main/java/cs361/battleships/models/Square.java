@@ -5,6 +5,7 @@ public class Square {
 
 	private int row;
 	private char column;
+	private AttackStatus status;
 
 	public Square() {
 	}
@@ -31,5 +32,19 @@ public class Square {
 	}
 
 	public boolean isEqual(Square otherSquare) {
-		return this.row == otherSquare.row && this.column == otherSquare.column; }
+		return this.row == otherSquare.row && this.column == otherSquare.column;
+	}
+
+	public AttackStatus getResult() {
+		return this.status;
+	}
+
+	public void setResult(AttackStatus result) {
+		this.status = result;
+	}
+
+	public void setLocation(Square square) {
+		this.row = square.getRow();
+		this.column = square.getColumn();
+	}
 }
