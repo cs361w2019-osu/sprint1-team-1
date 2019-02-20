@@ -15,6 +15,7 @@ public class Board {
 	public Board() {
 		this.placedShips = new ArrayList<>();
 		this.attacks = new ArrayList<>();
+		this.sonars = new ArrayList<>();
 	}
 
 	/*
