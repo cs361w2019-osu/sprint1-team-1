@@ -43,10 +43,6 @@ public class Square {
 		this.status = result;
 	}
 
-	public Square getLocation() {
-		return new Square(this.row, this.column);
-	}
-
 	public void setLocation(Square square) {
 		this.row = square.getRow();
 		this.column = square.getColumn();

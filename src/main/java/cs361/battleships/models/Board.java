@@ -74,7 +74,7 @@ public class Board {
 
 		// Make sure you dont click the same twice
 		for (Square a : attacks) {
-			if (attackRes.getLocation().isEqual(a.getLocation())) {
+			if (attackRes.isEqual(a)) {
 				attackRes.setResult(AttackStatus.INVALID);
 				return attackRes;
 			}
@@ -84,7 +84,7 @@ public class Board {
 			//If so, does it hit an good part of ship
 		for (int i = 0; i < placedShips.size(); i++) {
 			for (int j = 0; j < placedShips.get(i).getHealthSquares().size(); j++) {
-				if (attackRes.getLocation().isEqual(placedShips.get(i).getHealthSquares().get(j))) {
+				if (attackRes.isEqual(placedShips.get(i).getHealthSquares().get(j))) {
 					attackRes.setResult(AttackStatus.HIT);
 					placedShips.get(i).getHealthSquares().remove(j);
 				}
