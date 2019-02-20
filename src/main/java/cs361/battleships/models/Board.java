@@ -6,7 +6,7 @@ import java.util.List;
 public class Board {
 
 	private List<Ship> placedShips;
-	private List<Result> attacks;
+	private List<Square> attacks;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -60,8 +60,8 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public Result attack(int x, char y) {
-		Result attackRes = new Result();
+	public Square attack(int x, char y) {
+		Square attackRes = new Square();
 		attackRes.setResult(AttackStatus.MISS);
 		attackRes.setLocation(new Square(x,y));
 
@@ -73,7 +73,7 @@ public class Board {
 
 
 		// Make sure you dont click the same twice
-		for (Result a : attacks) {
+		for (Square a : attacks) {
 			if (attackRes.getLocation().isEqual(a.getLocation())) {
 				attackRes.setResult(AttackStatus.INVALID);
 				return attackRes;
@@ -122,11 +122,11 @@ public class Board {
 		placedShips = ships;
 	}
 
-	public List<Result> getAttacks() {
+	public List<Square> getAttacks() {
 		return this.attacks;
 	}
 
-	public void setAttacks(List<Result> attacks) {
+	public void setAttacks(List<Square> attacks) {
 		this.attacks = attacks;
 	}
 }
