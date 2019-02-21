@@ -7,6 +7,7 @@ public class Board {
 
 	private List<Ship> placedShips;
 	private List<Result> attacks;
+	private List<Sonar> sonars;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -14,6 +15,7 @@ public class Board {
 	public Board() {
 		this.placedShips = new ArrayList<>();
 		this.attacks = new ArrayList<>();
+		this.sonars = new ArrayList<>();
 	}
 
 	/*
@@ -104,8 +106,6 @@ public class Board {
 		return attackRes;
 	}
 
-
-
 	public boolean doesPlayerHaveShipsAlive() {
 		for (Ship ship : placedShips) {
 			if (ship.isAlive())
@@ -113,6 +113,23 @@ public class Board {
 		}
 		return false;
 	}
+
+	public boolean placeSonar(int row, char column) {
+	    if(row - 2 < 1 || row + 2 > 10) {
+	        return false;
+        }
+	    if((int) column - (int)'A' < 0 || (int) 'J' - (int) column < 2) {
+	        return false;
+        }
+	    if(sonars.size() >= 2) {
+	        return false;
+        }
+
+	    Sonar sonar = new Sonar();
+	    sonar.setSonar(placedShips, row, column);
+	    sonars.add(sonar);
+	    return true;
+    }
 
 	public List<Ship> getShips() {
 		return placedShips;
@@ -125,6 +142,10 @@ public class Board {
 	public List<Result> getAttacks() {
 		return this.attacks;
 	}
+
+	public List<Sonar> getSonars() {
+	    return this.sonars;
+    }
 
 	public void setAttacks(List<Result> attacks) {
 		this.attacks = attacks;

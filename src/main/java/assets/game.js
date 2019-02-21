@@ -130,13 +130,9 @@ function markHits(board, elementId, surrenderText) {
     var i;
     var j;
     for(i = 0; i < shipsArr.length; i++) {
-        console.log("1",i);
         if(shipsArr[i].healthSquares.length < shipsArr[i].length) {
-          console.log("2",i);
           ship = shipsArr[i];
-          console.log("3",i);
           indices = missingHealthIndices(ship);
-          console.log("4",i);
           scoreId = "";
           if(elementId == "player") {
             console.log(indices);
