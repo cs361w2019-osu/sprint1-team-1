@@ -245,6 +245,69 @@ function drawOponnent() {
   }
 }
 
+function drawSonar() {
+  var i;
+  for(i = 0; i < game.opponentsBoard.sonars.length; i++) {
+    var sonar = game.opponentsBoard.sonars[i];
+    console.log("Sonar Row:", sonar.row, "Column:", sonar.column);
+
+    var left = Math.max(0, sonar.column.charCodeAt(0) - 'A'.charCodeAt(0) - 2);
+    var right = Math.min(9, sonar.column.charCodeAt(0) + 2 - 'A'.charCodeAt(0));
+    var bottom = Math.min(10, sonar.row + 2);
+    var top = Math.max(1, sonar.row - 2);
+
+    var emptyArea = [];
+    var j;
+    for(j = top; j < sonar.row; j++) {
+      var square = {row:j,column:sonar.column};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    for(j = bottom; j > sonar.row; j--) {
+      var square = {row:j,column:sonar.column};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    for(j = left; j < right + 1; j++) {
+      var currColumn = String.fromCharCode(65 + j)
+      var square = {row:sonar.row,column:currColumn};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    //Finds the corners around the sonar starting from top right, goes clockwise
+    var corners = [{row:Math.max(top,sonar.row - 1),column:String.fromCharCode(65 + Math.min(sonar.column.charCodeAt(0) - 65 + 1,right))},
+                   {row:Math.min(bottom,sonar.row + 1),column:String.fromCharCode(65 + Math.min(sonar.column.charCodeAt(0) - 65 + 1,right))},
+                   {row:Math.min(bottom,sonar.row + 1),column:String.fromCharCode(65 + Math.max(sonar.column.charCodeAt(0) - 65 - 1, left))},
+                   {row:Math.max(top,sonar.row - 1),column:String.fromCharCode(65 + Math.max(sonar.column.charCodeAt(0) - 65 - 1, left))}
+                  ]
+    for(j = 0; j < corners.length; j++) {
+      var square = corners[j];
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false
+      && JSON.stringify(emptyArea).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+
+    console.log("Found ships:",sonar.foundShips);
+    console.log("Empty Area:",emptyArea);
+
+    for(j = 0; j < sonar.foundShips.length; j++) {
+      var square = sonar.foundShips[j];
+      console.log("Current found square:", square);
+      document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarFound");
+    }
+
+    for(j = 0; j < emptyArea.length; j++) {
+      var square = emptyArea[j];
+      console.log("Current empty square:", square);
+      document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarEmpty");
+    }
+  }
+}
+
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -261,7 +324,7 @@ function redrawGrid() {
 
     drawPlayer()
     drawOponnent()
-    
+    drawSonar()
 
     /*
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {

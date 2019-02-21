@@ -115,10 +115,10 @@ public class Board {
 	}
 
 	public boolean placeSonar(int row, char column) {
-	    if(row - 2 < 1 || row + 2 > 10) {
+	    if(row< 1 || row > 10) {
 	        return false;
         }
-	    if((int) column - (int)'A' < 0 || (int) 'J' - (int) column < 2) {
+	    if((int) column - (int)'A' < 0 || (int) 'J' - (int) column < 0) {
 	        return false;
         }
 	    if(sonars.size() >= 2) {
