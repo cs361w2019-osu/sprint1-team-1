@@ -8,6 +8,9 @@ var opponentHits = document.getElementById('opponent-hits');
 var opponentSinks = document.getElementById('opponent-sinks');
 var playerHits = document.getElementById('player-hits');
 var playerSinks = document.getElementById('player-sinks');
+var useSonar = document.getElementById('use-sonar');
+var usingSonar = false;
+var sonarUses = 0;
 
 
 var shipList = {
@@ -107,6 +110,11 @@ function missingHealthIndices(ship) {
     }
     return missingInd;
 }
+
+useSonar.addEventListener('click', function(event) {
+    usingSonar = true;
+    // TODO make the next attack a sonar pulse, don't have opponent make an attack
+});
 
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
@@ -296,6 +304,15 @@ function cellClick() {
                 registerCellListener((e) => {});
             }
         });
+    } else if (usingSonar) {
+        if (sonarUses < parseInt(opponentSinks.textContent)) {
+            sonarUses++; // increment the number of sonar pulses
+            // Use the Sonar Pulse
+            console.log("You used the sonar");
+        } else {
+            alert("You must sink a ship before you can use Sonar");
+        }
+        usingSonar = false; // reset using sonar after one pulse
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
