@@ -49,17 +49,4 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
-/*
-    public Result sonar(Context context, AttackGameAction g) {
-        Game game = g.getGame();
-        // TODO make sonar function in game
-        boolean result = game.sonar(g.getActionRow(), g.getActionColumn());
-
-        if (result) {
-            return Results.json().render(game);
-        } else {
-            return Results.badRequest();
-        }
-    }
-*/
 }

@@ -166,6 +166,85 @@ function markHits(board, elementId, surrenderText) {
     }
 }
 
+function drawPlayer() {
+  var i;
+  var j;
+  for(i = 0; i < game.playersBoard.ships.length; i++) {
+    var currShip = game.playersBoard.ships[i];
+    for(j = 0; j < currShip.occupiedSquares.length; j++) {
+      var square = currShip.occupiedSquares[j];
+      var image;
+      if(j == 0) {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/ship_tip.png";
+        imageScore.src = "/assets/images/ship_tip.png";
+      } else if (j == currShip.occupiedSquares.length - 1) {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/flag_tip_white.png";
+        imageScore.src = "/assets/images/flag_tip_white.png";
+      } else {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/ship_middle.png";
+        imageScore.src = "/assets/images/ship_middle.png";
+      }
+
+      if(currShip.shipVertical == false) {
+          image.classList.add("rotate");
+      }
+
+      document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      switch(currShip.kind) {
+          case "MINESWEEPER":
+              document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
+              break;
+          case "DESTROYER":
+              document.getElementById("left-table-shipscore").rows[j].cells[1].appendChild(imageScore);
+              break;
+          case "BATTLESHIP":
+              document.getElementById("left-table-shipscore").rows[j].cells[2].appendChild(imageScore);
+              break;
+      }
+
+    }
+  }
+}
+
+function drawOponnent() {
+  var i;
+  var j;
+  for(i = 0; i < game.opponentsBoard.ships.length; i++) {
+      var currShip = game.opponentsBoard.ships[i];
+      for (j = 0; j < currShip.occupiedSquares.length; j++) {
+          var image;
+          if(j == 0) {
+              image = document.createElement("img");
+              image.src = "/assets/images/ship_tip.png";
+          } else if (j == currShip.occupiedSquares.length - 1) {
+              image = document.createElement("img");
+              image.src = "/assets/images/flag_tip_white.png";
+          } else {
+              image = document.createElement("img");
+              image.src = "/assets/images/ship_middle.png";
+          }
+
+          switch(currShip.kind) {
+              case "MINESWEEPER":
+                  document.getElementById("right-table-shipscore").rows[j].cells[0].appendChild(image);
+                  break;
+              case "DESTROYER":
+                  document.getElementById("right-table-shipscore").rows[j].cells[1].appendChild(image);
+                  break;
+              case "BATTLESHIP":
+                  document.getElementById("right-table-shipscore").rows[j].cells[2].appendChild(image);
+                  break;
+          }
+      }
+  }
+}
+
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -180,78 +259,9 @@ function redrawGrid() {
     }
 
 
-    var i;
-    var j;
-    for(i = 0; i < game.playersBoard.ships.length; i++) {
-      var currShip = game.playersBoard.ships[i];
-      for(j = 0; j < currShip.occupiedSquares.length; j++) {
-        var square = currShip.occupiedSquares[j];
-        var image;
-        if(j == 0) {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/ship_tip.png";
-          imageScore.src = "/assets/images/ship_tip.png";
-        } else if (j == currShip.occupiedSquares.length - 1) {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/flag_tip_white.png";
-          imageScore.src = "/assets/images/flag_tip_white.png";
-        } else {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/ship_middle.png";
-          imageScore.src = "/assets/images/ship_middle.png";
-        }
-
-        if(currShip.shipVertical == false) {
-            image.classList.add("rotate");
-        }
-
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
-        switch(currShip.kind) {
-            case "MINESWEEPER":
-                document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
-                break;
-            case "DESTROYER":
-                document.getElementById("left-table-shipscore").rows[j].cells[1].appendChild(imageScore);
-                break;
-            case "BATTLESHIP":
-                document.getElementById("left-table-shipscore").rows[j].cells[2].appendChild(imageScore);
-                break;
-        }
-
-      }
-    }
-
-    for(i = 0; i < game.opponentsBoard.ships.length; i++) {
-        var currShip = game.opponentsBoard.ships[i];
-        for (j = 0; j < currShip.occupiedSquares.length; j++) {
-            var image;
-            if(j == 0) {
-                image = document.createElement("img");
-                image.src = "/assets/images/ship_tip.png";
-            } else if (j == currShip.occupiedSquares.length - 1) {
-                image = document.createElement("img");
-                image.src = "/assets/images/flag_tip_white.png";
-            } else {
-                image = document.createElement("img");
-                image.src = "/assets/images/ship_middle.png";
-            }
-
-            switch(currShip.kind) {
-                case "MINESWEEPER":
-                    document.getElementById("right-table-shipscore").rows[j].cells[0].appendChild(image);
-                    break;
-                case "DESTROYER":
-                    document.getElementById("right-table-shipscore").rows[j].cells[1].appendChild(image);
-                    break;
-                case "BATTLESHIP":
-                    document.getElementById("right-table-shipscore").rows[j].cells[2].appendChild(image);
-                    break;
-            }
-        }
-    }
+    drawPlayer()
+    drawOponnent()
+    
 
     /*
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
@@ -306,9 +316,13 @@ function cellClick() {
         });
     } else if (usingSonar) {
         if (sonarUses < parseInt(opponentSinks.textContent)) {
-            sonarUses++; // increment the number of sonar pulses
-            // Use the Sonar Pulse
-            console.log("You used the sonar");
+          sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
+              sonarUses++; // increment the number of sonar pulses
+              // Use the Sonar Pulse
+              console.log("You used the sonar");
+              game = data;
+              redrawGrid();
+          });
         } else {
             alert("You must sink a ship before you can use Sonar");
         }
