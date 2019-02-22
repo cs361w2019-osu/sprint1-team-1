@@ -95,12 +95,24 @@ public class BoardTest {
     @Test
     public void testHitShip() {
         Board board = new Board();
-        Ship destroyer = new Ship("MINESWEEPER");
-        board.placeShip(destroyer, 1, 'B', false);
+        Ship minesweeper = new Ship("MINESWEEPER");
+        board.placeShip(minesweeper, 1, 'B', false);
 
-        Result result = board.attack(1, 'B');
+        Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.HIT);
     }
+
+    @Test
+    public void testHitShipArmr() {
+        Board board = new Board();
+        Ship destroyer = new Ship("DESTROYER");
+        board.placeShip(destroyer, 1, 'B', false);
+
+        Result result = board.attack(1, 'C');
+        assertTrue(result.getResult() == AttackStatus.HITARMR);
+    }
+
+
 
     @Test
     public void testMissShip() {
@@ -114,6 +126,21 @@ public class BoardTest {
     }
 
     @Test
+    public void testCaptSinkShip() {
+        Board board = new Board();
+        Ship minesweeper = new Ship("MINESWEEPER");
+        Ship destroyer = new Ship("DESTROYER");
+        board.placeShip(minesweeper, 1, 'B', false);
+        board.placeShip(destroyer, 3, 'A', false);
+
+        Result result;
+        result = board.attack(1, 'B');
+
+        assertTrue(result.getResult() == AttackStatus.SUNK);
+    }
+
+
+    @Test
     public void testSinkShip() {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
@@ -121,9 +148,29 @@ public class BoardTest {
         board.placeShip(minesweeper, 1, 'B', false);
         board.placeShip(destroyer, 3, 'A', false);
 
-        board.attack(1, 'B');
-        Result result = board.attack(1, 'C');
+        Result result;
+        result = board.attack(3, 'A');
+        result = board.attack(3, 'B');
+        result = board.attack(3, 'C');
+        result = board.attack(3, 'B');
+
+
         assertTrue(result.getResult() == AttackStatus.SUNK);
+    }
+    @Test
+    public void testSinkCaptShipProt() {
+        Board board = new Board();
+        //Ship minesweeper = new Ship("MINESWEEPER");
+        Ship destroyer = new Ship("DESTROYER");
+        //board.placeShip(minesweeper, 1, 'B', false);
+        board.placeShip(destroyer, 3, 'A', false);
+
+        Result result;
+        result = board.attack(3, 'A');
+        result = board.attack(3, 'B');
+        result = board.attack(3, 'C');
+
+        assertTrue(result.getResult() == AttackStatus.HIT);
     }
 
     @Test

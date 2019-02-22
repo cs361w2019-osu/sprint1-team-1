@@ -99,7 +99,7 @@ td:hover {
 }
 
 .sonarFound {
-  background-color: green;
+  background-color: lightgreen;
 }
 
 .occupied {
@@ -110,12 +110,15 @@ td:hover {
     background-color: orange;
 }
 
-.sink {
-    background-color: red;
-}
-
 .miss {
     background-color: blue;
+}
+
+.hitarmr {
+    background-color: lightcoral;
+}
+.sink {
+    background-color: red;
 }
 
 .rotate {
