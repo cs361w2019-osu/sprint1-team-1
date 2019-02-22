@@ -73,25 +73,21 @@ public class Board {
 			return attackRes;
 		}
 
+
+		System.out.println("PreAttack");
 		// Check if hits enemy ship
 			//If so, does it hit an good part of ship
 		AttackStatus result = AttackStatus.INVALID;
 		for (int i = 0; i < placedShips.size(); i++) {
 			result = placedShips.get(i).takeDamageFrom(attackRes);
-			if(result == AttackStatus.HIT || result == AttackStatus.HITARMR)
+			if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK)
 				break;
 		}
 
 		attackRes.setResult(result);
 		attacks.add(attackRes);
 
-		for(Result a : attacks){
-			if(a.getLocation().isEqual(attackRes.getLocation()) && ( a.getResult() == AttackStatus.MISS || a.getResult() == AttackStatus.INVALID)){
-				attackRes.setResult(AttackStatus.INVALID);
-				attacks.remove(attackRes);
-			}
-		}
-
+		System.out.println("PreCheck");
 
 		if ( !doesPlayerHaveShipsAlive() ){
 			attackRes.setResult(AttackStatus.SURRENDER);

@@ -12,6 +12,7 @@ public class HealthSquare extends Square{
     }
 
     public HealthSquare(Square s){
+        super(s);
         this.health = 1;
         this.isCaptain = false;
     }

@@ -46,10 +46,12 @@ public class Ship {
 		}
 		for(Square s : newOccupiedSquares) {
 			occupiedSquares.add(s);
-			healthSquares.add(new HealthSquare((s)));
+			healthSquares.add(new HealthSquare(s));
 		}
-
-		healthSquares.set(length - 2, new HealthSquare(healthSquares.get(length - 2), 2, true));
+		System.out.println("setting up ship");
+		healthSquares.set(length - 2,
+				new HealthSquare(healthSquares.get(length - 2),
+						kind.equals("MINESWEEPER") ? 1 : 2, true));
 	}
 
 	public int getLength() {
@@ -80,6 +82,8 @@ public class Ship {
 
 
 	public boolean isStillAlive(){
+		if(!alive)
+			return false;
 		for(HealthSquare hs : healthSquares){
 			if(hs.getHealth() != 0)
 				return true;
@@ -94,6 +98,11 @@ public class Ship {
 			if(attack.getLocation().isEqual(hs) && hs.getHealth() == 2){
 				hs.setHealth(1);
 				res = AttackStatus.HITARMR;
+			}
+			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isCaptain()){
+				hs.setHealth(0);
+				alive = false;
+				res = AttackStatus.SUNK;
 			}
 			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1){
 				hs.setHealth(0);

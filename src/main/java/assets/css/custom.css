@@ -118,6 +118,10 @@ td:hover {
     background-color: blue;
 }
 
+.hitarmr {
+    background-color: lightcoral;
+}
+
 .rotate {
     transform: rotate(-90deg);
 }
