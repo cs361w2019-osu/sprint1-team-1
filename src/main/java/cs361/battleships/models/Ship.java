@@ -1,5 +1,6 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -10,11 +11,13 @@ public class Ship {
 	@JsonProperty private List<Square> occupiedSquares = new ArrayList<>();
 	@JsonProperty private List<HealthSquare> healthSquares = new ArrayList<>();
 
+
 	private boolean alive;
 
 	private String kind;
 	private int length;
 	private boolean shipVertical;
+	private int healthSquareLength;
 
 
 	public Ship() {
@@ -81,7 +84,7 @@ public class Ship {
 	}
 
 
-	public boolean isStillAlive(){
+	public boolean stillAlive(){
 		if(!alive)
 			return false;
 		for(HealthSquare hs : healthSquares){
@@ -93,27 +96,27 @@ public class Ship {
 	}
 
 	public AttackStatus takeDamageFrom(Result attack){
-		AttackStatus res = AttackStatus.MISS;
+		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
 			if(attack.getLocation().isEqual(hs) && hs.getHealth() == 2){
 				hs.setHealth(1);
-				res = AttackStatus.HITARMR;
+				resp = AttackStatus.HITARMR;
 			}
-			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isCaptain()){
+			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isisCaptain()){
 				hs.setHealth(0);
 				alive = false;
-				res = AttackStatus.SUNK;
+				resp = AttackStatus.SUNK;
 			}
 			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1){
 				hs.setHealth(0);
-				res = AttackStatus.HIT;
+				resp = AttackStatus.HIT;
 			}
 		}
 
-		if(!isStillAlive())
+		if(!stillAlive())
 			return AttackStatus.SUNK;
 
-		return res;
+		return resp;
 	}
 
 

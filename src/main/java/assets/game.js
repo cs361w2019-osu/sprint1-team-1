@@ -80,14 +80,22 @@ function checkCounters(board, elementId) {
 }
 
 function missingHealthIndices(ship) {
-    missing = [];
     missingInd = [];
+
+
+
+
+
+
+    missing = [];
+
 
     var i;
     var j;
     for(i = 0; i < ship.occupiedSquares.length; i++) {
         flag = false;
         for(j = 0; j < ship.healthSquares.length; j++) {
+            console.log(JSON.stringify(ship.occupiedSquares[i]) == JSON.stringify(ship.healthSquares[j]));
             if(JSON.stringify(ship.occupiedSquares[i]) == JSON.stringify(ship.healthSquares[j])) {
                 flag = true;
                 break;
@@ -135,37 +143,6 @@ function markHits(board, elementId, surrenderText) {
 
 
 });
-    shipsArr = board.ships;
-
-    var i;
-    var j;
-    for(i = 0; i < shipsArr.length; i++) {
-        if(shipsArr[i].healthSquares.length < shipsArr[i].length) {
-          ship = shipsArr[i];
-          indices = missingHealthIndices(ship);
-          scoreId = "";
-          if(elementId == "player") {
-            console.log(indices);
-            scoreId = "left-table-shipscore";
-          } else {
-            scoreId = "right-table-shipscore";
-          }
-          for(j = 0; j < indices.length; j++) {
-            switch(ship.kind) {
-              case "MINESWEEPER":
-                  document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add("hit");
-                  break;
-              case "DESTROYER":
-                  document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add("hit");
-                  break;
-              case "BATTLESHIP":
-                  document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add("hit");
-                  break;
-            }
-
-          }
-        }
-    }
 }
 
 function drawPlayer() {
@@ -366,6 +343,7 @@ function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
+        console.log("Cell clicked");
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;

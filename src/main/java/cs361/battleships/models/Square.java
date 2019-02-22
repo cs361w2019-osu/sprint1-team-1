@@ -1,6 +1,12 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 @SuppressWarnings("unused")
+
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = HealthSquare.class, name = "healthSquare")
+})
 public class Square {
 
 	private int row;

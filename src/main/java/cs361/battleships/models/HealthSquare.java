@@ -5,6 +5,10 @@ public class HealthSquare extends Square{
     private int health;
     private boolean isCaptain;
 
+    public HealthSquare() {
+        super();
+    }
+
     public HealthSquare(Square s, int health, boolean isCaptain){
         super(s);
         this.health = health;
@@ -17,6 +21,17 @@ public class HealthSquare extends Square{
         this.isCaptain = false;
     }
 
+    public HealthSquare(int health, boolean isCaptain) {
+        this.health = health;
+        this.isCaptain = isCaptain;
+    }
+
+    public HealthSquare(int row, char column, int health, boolean isCaptain) {
+        super(row, column);
+        this.health = health;
+        this.isCaptain = isCaptain;
+    }
+
 
     public int getHealth() {
         return health;
@@ -26,9 +41,12 @@ public class HealthSquare extends Square{
         this.health = health;
     }
 
-    public boolean isCaptain() {
+    //public void getisCaptain() { return isCaptain;}
+
+    public boolean isisCaptain() {
         return isCaptain;
     }
+
 
     public void setCaptain(boolean captain) {
         isCaptain = captain;
