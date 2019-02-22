@@ -174,6 +174,22 @@ public class BoardTest {
     }
 
     @Test
+    public void testSonar() {
+        Board board = new Board();
+        Ship destroyer = new Ship("DESTROYER");
+
+        board.placeShip(destroyer, 3, 'A', false);
+        board.placeSonar(3, 'B');
+
+        Sonar sonar = board.getSonars().get(0);
+        Ship ship = board.getShips().get(0);
+        for(int i = 0; i < sonar.getFoundShips().size(); i++) {
+            Square hit = sonar.getFoundShips().get(i);
+            assertTrue(ship.getOccupiedSquares().indexOf(hit) != -1);
+        }
+    }
+
+    @Test
     public void testSurrender() {
         Board board = new Board();
         Ship destroyer = new Ship("MINESWEEPER");
