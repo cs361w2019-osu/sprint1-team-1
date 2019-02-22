@@ -17,7 +17,6 @@ public class Ship {
 	private String kind;
 	private int length;
 	private boolean shipVertical;
-	private int healthSquareLength;
 
 
 	public Ship() {

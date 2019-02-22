@@ -143,6 +143,37 @@ function markHits(board, elementId, surrenderText) {
 
 
 });
+    shipsArr = board.ships;
+
+    var i;
+    var j;
+    for(i = 0; i < shipsArr.length; i++) {
+        if(shipsArr[i].healthSquares.length < shipsArr[i].length) {
+          ship = shipsArr[i];
+          indices = missingHealthIndices(ship);
+          scoreId = "";
+          if(elementId == "player") {
+            console.log(indices);
+            scoreId = "left-table-shipscore";
+          } else {
+            scoreId = "right-table-shipscore";
+          }
+          for(j = 0; j < indices.length; j++) {
+            switch(ship.kind) {
+              case "MINESWEEPER":
+                  document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add("hit");
+                  break;
+              case "DESTROYER":
+                  document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add("hit");
+                  break;
+              case "BATTLESHIP":
+                  document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add("hit");
+                  break;
+            }
+
+          }
+        }
+    }
 }
 
 function drawPlayer() {
