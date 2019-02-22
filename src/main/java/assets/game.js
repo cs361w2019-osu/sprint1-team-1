@@ -79,30 +79,18 @@ function checkCounters(board, elementId) {
     }
 }
 
-function missingHealthIndices(ship) {
-    missingInd = [];
-
-
-
-
-
-
-    missing = [];
+function missingHealthIndices(board, ship) {
+    var missingInd = [];
+    var missing = [];
 
 
     var i;
     var j;
-    for(i = 0; i < ship.occupiedSquares.length; i++) {
-        flag = false;
-        for(j = 0; j < ship.healthSquares.length; j++) {
-            console.log(JSON.stringify(ship.occupiedSquares[i]) == JSON.stringify(ship.healthSquares[j]));
-            if(JSON.stringify(ship.occupiedSquares[i]) == JSON.stringify(ship.healthSquares[j])) {
-                flag = true;
-                break;
-            }
-        }
-        if(flag == false) {
-            missing.push(ship.occupiedSquares[i]);
+    for(i = 0; i < board.attacks.length; i++) {
+        if(board.attacks[i].ship.kind == ship.kind) {
+          if(board.attacks[i].result == "HIT" || board.attacks[i].result == "SINK") {
+              missing.push(board.attacks[i].location);
+          }
         }
     }
     if(missing.length > 0) {
@@ -143,6 +131,38 @@ function markHits(board, elementId, surrenderText) {
 
 
 });
+  shipsArr = board.ships;
+
+  var i;
+  var j;
+  for(i = 0; i < shipsArr.length; i++) {
+    if(shipsArr[i].healthSquares.length < shipsArr[i].length) {
+      ship = shipsArr[i];
+      indices = missingHealthIndices(board, ship);
+      scoreId = "";
+      if(elementId == "player") {
+        console.log(indices);
+        scoreId = "left-table-shipscore";
+      } else {
+        scoreId = "right-table-shipscore";
+      }
+      for(j = 0; j < indices.length; j++) {
+        switch(ship.kind) {
+          case "MINESWEEPER":
+              document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add("hit");
+              break;
+          case "DESTROYER":
+              document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add("hit");
+              break;
+          case "BATTLESHIP":
+              document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add("hit");
+              break;
+        }
+
+      }
+    }
+  }
+
 }
 
 function drawPlayer() {
