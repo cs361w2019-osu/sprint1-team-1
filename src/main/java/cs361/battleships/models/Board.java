@@ -30,7 +30,7 @@ public class Board {
 			}
 		}
 		if (isVertical) {
-			if (x + ship.getLength() > 10 || x < 1) {
+			if (x + ship.getLength() - 1 > 10 || x < 1) {
 				return false;
 			}
 			for (int i = 0; i < ship.getLength(); i++) {
