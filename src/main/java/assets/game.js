@@ -136,9 +136,9 @@ function markHits(board, elementId, surrenderText) {
   var i;
   var j;
   for(i = 0; i < shipsArr.length; i++) {
-    if(shipsArr[i].healthSquares.length < shipsArr[i].length) {
-      ship = shipsArr[i];
-      indices = missingHealthIndices(board, ship);
+    ship = shipsArr[i];
+    indices = missingHealthIndices(board, ship);
+    if(indices.length > 0) {
       scoreId = "";
       if(elementId == "player") {
         console.log(indices);
@@ -162,7 +162,6 @@ function markHits(board, elementId, surrenderText) {
       }
     }
   }
-
 }
 
 function drawPlayer() {

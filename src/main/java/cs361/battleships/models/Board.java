@@ -80,8 +80,15 @@ public class Board {
 		AttackStatus result = AttackStatus.INVALID;
 		for (int i = 0; i < placedShips.size(); i++) {
 			result = placedShips.get(i).takeDamageFrom(attackRes);
+			attackRes.setShip(placedShips.get(i));
 			if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK)
 				break;
+		}
+
+		if(result == AttackStatus.SUNK){
+			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
+				attacks.add(new Result(attackRes, AttackStatus.SUNK));
+			}
 		}
 
 		attackRes.setResult(result);
