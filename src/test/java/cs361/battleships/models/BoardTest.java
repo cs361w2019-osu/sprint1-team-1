@@ -112,6 +112,36 @@ public class BoardTest {
         assertTrue(result.getResult() == AttackStatus.HITARMR);
     }
 
+    @Test
+    public void testHealthSquares() {
+        Board board = new Board();
+        Ship minesweeper = new Ship("MINESWEEPER");
+        board.placeShip(minesweeper, 2, 'B', false);
+
+        Ship ship = board.getShips().get(0);
+
+        assertTrue(ship.stillAlive());
+        assertTrue(ship.isAlive());
+
+        board.attack(2, 'B');
+        board.attack(2,'C');
+
+        ship = board.getShips().get(0);
+
+        assertFalse(ship.stillAlive());
+    }
+
+    @Test
+    public void testShipMisc() {
+        Ship ship = new Ship();
+
+        assertTrue(ship.isAlive());
+        assertFalse(ship.isShipVertical());
+
+        ship.sinkShip();
+
+        assertFalse(ship.isAlive());
+    }
 
 
     @Test
