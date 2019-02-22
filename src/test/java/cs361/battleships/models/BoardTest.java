@@ -126,7 +126,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testSinkShip() {
+    public void testCaptSinkShip() {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
@@ -135,13 +135,28 @@ public class BoardTest {
 
         Result result;
         result = board.attack(1, 'B');
-        System.out.println(result.getResult());
-        result = board.attack(1, 'C');
-        System.out.println(result.getResult());
 
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
+
+    @Test
+    public void testSinkShip() {
+        Board board = new Board();
+        Ship minesweeper = new Ship("MINESWEEPER");
+        Ship destroyer = new Ship("DESTROYER");
+        board.placeShip(minesweeper, 1, 'B', false);
+        board.placeShip(destroyer, 3, 'A', false);
+
+        Result result;
+        result = board.attack(3, 'A');
+        result = board.attack(3, 'B');
+        result = board.attack(3, 'C');
+        result = board.attack(3, 'B');
+
+
+        assertTrue(result.getResult() == AttackStatus.SUNK);
+    }
     @Test
     public void testSinkCaptShipProt() {
         Board board = new Board();
@@ -152,11 +167,8 @@ public class BoardTest {
 
         Result result;
         result = board.attack(3, 'A');
-        System.out.println(result.getResult());
         result = board.attack(3, 'B');
-        System.out.println(result.getResult());
         result = board.attack(3, 'C');
-        System.out.println(result.getResult());
 
         assertTrue(result.getResult() == AttackStatus.HIT);
     }

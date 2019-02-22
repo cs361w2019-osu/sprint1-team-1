@@ -50,7 +50,6 @@ public class Ship {
 			occupiedSquares.add(s);
 			healthSquares.add(new HealthSquare(s));
 		}
-		System.out.println("setting up ship");
 		healthSquares.set(length - 2,
 				new HealthSquare(healthSquares.get(length - 2),
 						kind.equals("MINESWEEPER") ? 1 : 2, true));

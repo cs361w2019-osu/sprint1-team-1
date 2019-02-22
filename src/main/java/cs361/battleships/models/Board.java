@@ -93,7 +93,6 @@ public class Board {
 		if(result == AttackStatus.SUNK){
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
 				attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
-				System.out.println("Sunk more tiles");
 			}
 		}
 
@@ -106,7 +105,6 @@ public class Board {
 			attackRes.setResult(AttackStatus.SURRENDER);
 		}
 
-        System.out.println(attackRes.getResult());
 		return attackRes;
 	}
 
