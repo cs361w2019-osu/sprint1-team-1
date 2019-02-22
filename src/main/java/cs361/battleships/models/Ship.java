@@ -112,8 +112,7 @@ public class Ship {
 			}
 		}
 
-		if(!stillAlive())
-			return AttackStatus.SUNK;
+
 
 		return resp;
 	}

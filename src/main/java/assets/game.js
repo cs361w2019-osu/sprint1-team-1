@@ -120,7 +120,7 @@ function markHits(board, elementId, surrenderText) {
     } else if (attack.result === "HIT") {
         className = "hit";
     } else if (attack.result === "SUNK") {
-        className = "hit";
+        className = "sink";
     } else if (attack.result === "SURRENDER") {
         alert(surrenderText);
     } else if(attack.result === "HITARMR"){

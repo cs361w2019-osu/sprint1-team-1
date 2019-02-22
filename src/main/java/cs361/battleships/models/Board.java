@@ -74,7 +74,12 @@ public class Board {
 		}
 
 
-		System.out.println("PreAttack");
+		for(Result attack : attacks){
+			if(attack.getLocation().isEqual(attackRes.getLocation()) && ( attack.getResult() == AttackStatus.MISS || attack.getResult() == AttackStatus.HIT || attack.getResult() == AttackStatus.SUNK)){
+				return attackRes;
+			}
+		}
+
 		// Check if hits enemy ship
 			//If so, does it hit an good part of ship
 		AttackStatus result = AttackStatus.INVALID;
@@ -87,20 +92,21 @@ public class Board {
 
 		if(result == AttackStatus.SUNK){
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
-				attacks.add(new Result(attackRes, AttackStatus.SUNK));
+				attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+				System.out.println("Sunk more tiles");
 			}
 		}
 
 		attackRes.setResult(result);
 		attacks.add(attackRes);
 
-		System.out.println("PreCheck");
+
 
 		if ( !doesPlayerHaveShipsAlive() ){
 			attackRes.setResult(AttackStatus.SURRENDER);
 		}
 
-
+        System.out.println(attackRes.getResult());
 		return attackRes;
 	}
 
