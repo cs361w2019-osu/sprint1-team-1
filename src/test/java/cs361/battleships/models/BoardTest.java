@@ -177,15 +177,27 @@ public class BoardTest {
     public void testSonar() {
         Board board = new Board();
         Ship destroyer = new Ship("DESTROYER");
+        Ship minesweeper = new Ship("MINESWEEPER");
 
+        board.placeShip(minesweeper, 1, 'B', false);
         board.placeShip(destroyer, 3, 'A', false);
         board.placeSonar(3, 'B');
 
         Sonar sonar = board.getSonars().get(0);
-        Ship ship = board.getShips().get(0);
+        Ship ship1 = board.getShips().get(0);
+        Ship ship2 = board.getShips().get(1);
+        /*
+        for (Square square : destroyer.getOccupiedSquares()) {
+            assertTrue(sonar.getFoundShips().indexOf(square) != -1);
+        }
+
+        assertTrue(sonar.getFoundShips().indexOf(minesweeper.getOccupiedSquares().get(0)) != -1);
+
+        */
         for(int i = 0; i < sonar.getFoundShips().size(); i++) {
             Square hit = sonar.getFoundShips().get(i);
-            assertTrue(ship.getOccupiedSquares().indexOf(hit) != -1);
+            assertTrue(ship1.getOccupiedSquares().indexOf(hit) != -1
+                    || ship2.getOccupiedSquares().indexOf(hit) != -1);
         }
     }
 
