@@ -88,7 +88,7 @@ function missingHealthIndices(board, ship) {
     var j;
     for(i = 0; i < board.attacks.length; i++) {
         if(board.attacks[i].ship.kind == ship.kind) {
-          if(board.attacks[i].result == "HIT" || board.attacks[i].result == "SINK") {
+          if(board.attacks[i].result == "HIT" || board.attacks[i].result == "SUNK") {
               missing.push(board.attacks[i].location);
           }
         }
