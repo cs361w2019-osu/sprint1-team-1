@@ -30,6 +30,16 @@ public class ApplicationController {
         }
     }
 
+    public Result placeSonar(Context context, PlaceSonarGameAction g) {
+        Game game = g.getGame();
+        boolean result = game.placeSonar(g.getActionRow(), g.getActionColumn());
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+        }
+    }
+
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
         boolean result = game.attack(g.getActionRow(), g.getActionColumn());
