@@ -145,6 +145,24 @@ public class BoardTest {
     }
 
     @Test
+    public void testHealthSquareConstructor() {
+        int health = 2;
+        HealthSquare hs = new HealthSquare(health, false);
+
+        assertTrue(hs.getHealth() == health);
+
+        int row = 1;
+        char col = 'A';
+        hs = new HealthSquare(row, col, health, false);
+        assertTrue(hs.getHealth() == health);
+        assertTrue(hs.getColumn() == col);
+        assertTrue(hs.getRow() == row);
+
+        hs.setCaptain(true);
+        assertTrue(hs.isisCaptain());
+    }
+
+    @Test
     public void testShipMisc() {
         Ship ship = new Ship();
 
