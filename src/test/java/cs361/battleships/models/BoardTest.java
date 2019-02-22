@@ -33,6 +33,19 @@ public class BoardTest {
     }
 
     @Test
+    public void testSquareSetters() {
+        Square square = new Square();
+        char col = 'A';
+        int row = 1;
+
+        square.setColumn(col);
+        square.setRow(row);
+
+        assertTrue(square.getColumn() == col);
+        assertTrue(square.getRow() == row);
+    }
+
+    @Test
     public void testShipOccupiesSpace() {
         Board board = new Board();
         Square occupiedSquare = new Square(1, 'A');
