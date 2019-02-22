@@ -32,4 +32,8 @@ public class Sonar {
     public char getColumn() {
         return this.column;
     }
+
+    public List<Square> getFoundShips() {
+        return this.foundShips;
+    }
 }
