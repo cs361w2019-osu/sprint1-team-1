@@ -62,7 +62,7 @@ public class Board {
 	 */
 	public Result attack(int x, char y) {
 		Result attackRes = new Result();
-		attackRes.setResult(AttackStatus.MISS);
+		attackRes.setResult(AttackStatus.INVALID);
 		attackRes.setLocation(new Square(x,y));
 
 		// Bounds Checking
@@ -71,36 +71,31 @@ public class Board {
 			return attackRes;
 		}
 
-
-		// Make sure you dont click the same twice
-		for (Result a : attacks) {
-			if (attackRes.getLocation().isEqual(a.getLocation())) {
-				attackRes.setResult(AttackStatus.INVALID);
-				return attackRes;
-			}
-		}
-
 		// Check if hits enemy ship
 			//If so, does it hit an good part of ship
+		AttackStatus result = AttackStatus.INVALID;
 		for (int i = 0; i < placedShips.size(); i++) {
-			for (int j = 0; j < placedShips.get(i).getHealthSquares().size(); j++) {
-				if (attackRes.getLocation().isEqual(placedShips.get(i).getHealthSquares().get(j))) {
-					attackRes.setResult(AttackStatus.HIT);
-					placedShips.get(i).getHealthSquares().remove(j);
-				}
-				if ( placedShips.get(i).getHealthSquares().size() == 0 ) {
-					attackRes.setResult(AttackStatus.SUNK);
-					placedShips.get(i).sinkShip();
-				}
+			result = placedShips.get(i).takeDamageFrom(attackRes);
+			if(result == AttackStatus.HIT || result == AttackStatus.HITARMR)
+				break;
+		}
 
+		attackRes.setResult(result);
+		attacks.add(attackRes);
+
+		for(Result a : attacks){
+			if(a.getLocation().isEqual(attackRes.getLocation()) && ( a.getResult() == AttackStatus.MISS || a.getResult() == AttackStatus.INVALID)){
+				attackRes.setResult(AttackStatus.INVALID);
+				attacks.remove(attackRes);
 			}
 		}
+
 
 		if ( !doesPlayerHaveShipsAlive() ){
 			attackRes.setResult(AttackStatus.SURRENDER);
 		}
 
-		attacks.add(attackRes);
+
 		return attackRes;
 	}
 

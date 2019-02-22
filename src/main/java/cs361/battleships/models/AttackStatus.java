@@ -12,6 +12,8 @@ public enum AttackStatus {
 	 */
 	HIT,
 
+	HITARMR,
+
 	/**
 	 * THe result if an attack sinks the enemy ship
 	 */

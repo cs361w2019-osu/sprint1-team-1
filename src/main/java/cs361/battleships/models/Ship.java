@@ -8,13 +8,14 @@ import java.util.List;
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares = new ArrayList<>();
-	@JsonProperty private List<Square> healthSquares = new ArrayList<>();
+	@JsonProperty private List<HealthSquare> healthSquares = new ArrayList<>();
 
 	private boolean alive;
 
 	private String kind;
 	private int length;
 	private boolean shipVertical;
+
 
 	public Ship() {
 		this.alive = true;
@@ -45,8 +46,10 @@ public class Ship {
 		}
 		for(Square s : newOccupiedSquares) {
 			occupiedSquares.add(s);
-			healthSquares.add(s);
+			healthSquares.add(new HealthSquare((s)));
 		}
+
+		healthSquares.set(length - 2, new HealthSquare(healthSquares.get(length - 2), 2, true));
 	}
 
 	public int getLength() {
@@ -58,7 +61,7 @@ public class Ship {
 	}
 
 
-	public List<Square> getHealthSquares() {
+	public List<HealthSquare> getHealthSquares() {
 		return healthSquares;
 	}
 
@@ -74,4 +77,35 @@ public class Ship {
 	public boolean isShipVertical() {
 		return this.shipVertical;
 	}
+
+
+	public boolean isStillAlive(){
+		for(HealthSquare hs : healthSquares){
+			if(hs.getHealth() != 0)
+				return true;
+		}
+		alive = false;
+		return false;
+	}
+
+	public AttackStatus takeDamageFrom(Result attack){
+		AttackStatus res = AttackStatus.MISS;
+		for(HealthSquare hs : healthSquares){
+			if(attack.getLocation().isEqual(hs) && hs.getHealth() == 2){
+				hs.setHealth(1);
+				res = AttackStatus.HITARMR;
+			}
+			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1){
+				hs.setHealth(0);
+				res = AttackStatus.HIT;
+			}
+		}
+
+		if(!isStillAlive())
+			return AttackStatus.SUNK;
+
+		return res;
+	}
+
+
 }

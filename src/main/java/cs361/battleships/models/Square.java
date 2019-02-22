@@ -14,6 +14,11 @@ public class Square {
 		this.column = column;
 	}
 
+	public Square(Square s){
+		this.row = s.getRow();
+		this.column = s.getColumn();
+	}
+
 	public char getColumn() {
 		return column;
 	}
