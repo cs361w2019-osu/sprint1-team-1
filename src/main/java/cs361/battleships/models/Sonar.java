@@ -10,10 +10,6 @@ public class Sonar {
     @JsonProperty private char column;
     @JsonProperty private List<Square> foundShips = new ArrayList<>();
 
-    public List<Square> getSonar() {
-        return this.foundShips;
-    }
-
     public void setSonar(List<Ship> ships, int row, char column) {
         this.row = row;
         this.column = column;

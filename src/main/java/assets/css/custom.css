@@ -94,6 +94,14 @@ td:hover {
     background-color: gray;
 }
 
+.sonarEmpty {
+  background-color: gray;
+}
+
+.sonarFound {
+  background-color: red;
+}
+
 .occupied {
     background-color: white;
 }
@@ -242,5 +250,3 @@ input[type=checkbox] {
     background-color: #646464;
 
 }
-
-

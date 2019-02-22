@@ -166,6 +166,148 @@ function markHits(board, elementId, surrenderText) {
     }
 }
 
+function drawPlayer() {
+  var i;
+  var j;
+  for(i = 0; i < game.playersBoard.ships.length; i++) {
+    var currShip = game.playersBoard.ships[i];
+    for(j = 0; j < currShip.occupiedSquares.length; j++) {
+      var square = currShip.occupiedSquares[j];
+      var image;
+      if(j == 0) {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/ship_tip.png";
+        imageScore.src = "/assets/images/ship_tip.png";
+      } else if (j == currShip.occupiedSquares.length - 1) {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/flag_tip_white.png";
+        imageScore.src = "/assets/images/flag_tip_white.png";
+      } else {
+        image = document.createElement("img");
+        imageScore = document.createElement("img");
+        image.src = "/assets/images/ship_middle.png";
+        imageScore.src = "/assets/images/ship_middle.png";
+      }
+
+      if(currShip.shipVertical == false) {
+          image.classList.add("rotate");
+      }
+
+      document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      switch(currShip.kind) {
+          case "MINESWEEPER":
+              document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
+              break;
+          case "DESTROYER":
+              document.getElementById("left-table-shipscore").rows[j].cells[1].appendChild(imageScore);
+              break;
+          case "BATTLESHIP":
+              document.getElementById("left-table-shipscore").rows[j].cells[2].appendChild(imageScore);
+              break;
+      }
+
+    }
+  }
+}
+
+function drawOponnent() {
+  var i;
+  var j;
+  for(i = 0; i < game.opponentsBoard.ships.length; i++) {
+      var currShip = game.opponentsBoard.ships[i];
+      for (j = 0; j < currShip.occupiedSquares.length; j++) {
+          var image;
+          if(j == 0) {
+              image = document.createElement("img");
+              image.src = "/assets/images/ship_tip.png";
+          } else if (j == currShip.occupiedSquares.length - 1) {
+              image = document.createElement("img");
+              image.src = "/assets/images/flag_tip_white.png";
+          } else {
+              image = document.createElement("img");
+              image.src = "/assets/images/ship_middle.png";
+          }
+
+          switch(currShip.kind) {
+              case "MINESWEEPER":
+                  document.getElementById("right-table-shipscore").rows[j].cells[0].appendChild(image);
+                  break;
+              case "DESTROYER":
+                  document.getElementById("right-table-shipscore").rows[j].cells[1].appendChild(image);
+                  break;
+              case "BATTLESHIP":
+                  document.getElementById("right-table-shipscore").rows[j].cells[2].appendChild(image);
+                  break;
+          }
+      }
+  }
+}
+
+function drawSonar() {
+  var i;
+  for(i = 0; i < game.opponentsBoard.sonars.length; i++) {
+    var sonar = game.opponentsBoard.sonars[i];
+    console.log("Sonar Row:", sonar.row, "Column:", sonar.column);
+
+    var left = Math.max(0, sonar.column.charCodeAt(0) - 'A'.charCodeAt(0) - 2);
+    var right = Math.min(9, sonar.column.charCodeAt(0) + 2 - 'A'.charCodeAt(0));
+    var bottom = Math.min(10, sonar.row + 2);
+    var top = Math.max(1, sonar.row - 2);
+
+    var emptyArea = [];
+    var j;
+    for(j = top; j < sonar.row; j++) {
+      var square = {row:j,column:sonar.column};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    for(j = bottom; j > sonar.row; j--) {
+      var square = {row:j,column:sonar.column};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    for(j = left; j < right + 1; j++) {
+      var currColumn = String.fromCharCode(65 + j)
+      var square = {row:sonar.row,column:currColumn};
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+    //Finds the corners around the sonar starting from top right, goes clockwise
+    var corners = [{row:Math.max(top,sonar.row - 1),column:String.fromCharCode(65 + Math.min(sonar.column.charCodeAt(0) - 65 + 1,right))},
+                   {row:Math.min(bottom,sonar.row + 1),column:String.fromCharCode(65 + Math.min(sonar.column.charCodeAt(0) - 65 + 1,right))},
+                   {row:Math.min(bottom,sonar.row + 1),column:String.fromCharCode(65 + Math.max(sonar.column.charCodeAt(0) - 65 - 1, left))},
+                   {row:Math.max(top,sonar.row - 1),column:String.fromCharCode(65 + Math.max(sonar.column.charCodeAt(0) - 65 - 1, left))}
+                  ]
+    for(j = 0; j < corners.length; j++) {
+      var square = corners[j];
+      if(JSON.stringify(sonar.foundShips).includes(JSON.stringify(square)) == false
+      && JSON.stringify(emptyArea).includes(JSON.stringify(square)) == false) {
+        emptyArea.push(square);
+      }
+    }
+
+    console.log("Found ships:",sonar.foundShips);
+    console.log("Empty Area:",emptyArea);
+
+    for(j = 0; j < sonar.foundShips.length; j++) {
+      var square = sonar.foundShips[j];
+      console.log("Current found square:", square);
+      document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarFound");
+    }
+
+    for(j = 0; j < emptyArea.length; j++) {
+      var square = emptyArea[j];
+      console.log("Current empty square:", square);
+      document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarEmpty");
+    }
+  }
+}
+
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -180,78 +322,9 @@ function redrawGrid() {
     }
 
 
-    var i;
-    var j;
-    for(i = 0; i < game.playersBoard.ships.length; i++) {
-      var currShip = game.playersBoard.ships[i];
-      for(j = 0; j < currShip.occupiedSquares.length; j++) {
-        var square = currShip.occupiedSquares[j];
-        var image;
-        if(j == 0) {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/ship_tip.png";
-          imageScore.src = "/assets/images/ship_tip.png";
-        } else if (j == currShip.occupiedSquares.length - 1) {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/flag_tip_white.png";
-          imageScore.src = "/assets/images/flag_tip_white.png";
-        } else {
-          image = document.createElement("img");
-          imageScore = document.createElement("img");
-          image.src = "/assets/images/ship_middle.png";
-          imageScore.src = "/assets/images/ship_middle.png";
-        }
-
-        if(currShip.shipVertical == false) {
-            image.classList.add("rotate");
-        }
-
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
-        switch(currShip.kind) {
-            case "MINESWEEPER":
-                document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
-                break;
-            case "DESTROYER":
-                document.getElementById("left-table-shipscore").rows[j].cells[1].appendChild(imageScore);
-                break;
-            case "BATTLESHIP":
-                document.getElementById("left-table-shipscore").rows[j].cells[2].appendChild(imageScore);
-                break;
-        }
-
-      }
-    }
-
-    for(i = 0; i < game.opponentsBoard.ships.length; i++) {
-        var currShip = game.opponentsBoard.ships[i];
-        for (j = 0; j < currShip.occupiedSquares.length; j++) {
-            var image;
-            if(j == 0) {
-                image = document.createElement("img");
-                image.src = "/assets/images/ship_tip.png";
-            } else if (j == currShip.occupiedSquares.length - 1) {
-                image = document.createElement("img");
-                image.src = "/assets/images/flag_tip_white.png";
-            } else {
-                image = document.createElement("img");
-                image.src = "/assets/images/ship_middle.png";
-            }
-
-            switch(currShip.kind) {
-                case "MINESWEEPER":
-                    document.getElementById("right-table-shipscore").rows[j].cells[0].appendChild(image);
-                    break;
-                case "DESTROYER":
-                    document.getElementById("right-table-shipscore").rows[j].cells[1].appendChild(image);
-                    break;
-                case "BATTLESHIP":
-                    document.getElementById("right-table-shipscore").rows[j].cells[2].appendChild(image);
-                    break;
-            }
-        }
-    }
+    drawPlayer()
+    drawOponnent()
+    drawSonar()
 
     /*
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
@@ -306,9 +379,13 @@ function cellClick() {
         });
     } else if (usingSonar) {
         if (sonarUses < parseInt(opponentSinks.textContent)) {
-            sonarUses++; // increment the number of sonar pulses
-            // Use the Sonar Pulse
-            console.log("You used the sonar");
+          sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
+              sonarUses++; // increment the number of sonar pulses
+              // Use the Sonar Pulse
+              console.log("You used the sonar");
+              game = data;
+              redrawGrid();
+          });
         } else {
             alert("You must sink a ship before you can use Sonar");
         }

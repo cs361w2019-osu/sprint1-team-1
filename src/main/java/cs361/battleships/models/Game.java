@@ -31,7 +31,7 @@ public class Game {
     }
 
     public boolean placeSonar(int row, char column) {
-        return playersBoard.placeSonar(row, column);
+        return opponentsBoard.placeSonar(row, column);
     }
 
     /*
