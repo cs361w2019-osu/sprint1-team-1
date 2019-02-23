@@ -24,8 +24,7 @@ h1 {
 
 }
 .ship-score{
-    width: 23%;
-    height: 7em;
+    height: 10em;
     border-radius: 10px;
 }
 
@@ -47,7 +46,7 @@ body {
 }
 .table-container{
     /*border: 1px solid white;*/
-    padding: 0px 10em;
+    padding: 0px 5em;
     height: 400px;
     /*background: #d5d30b;*/
 }
@@ -58,7 +57,7 @@ div{
     /*border: 1px solid white;*/
     /*border: 1px solid #fffc0c;*/
     padding: 0px 10em;
-    height: 1em;
+    height: 12em;
 }
 .ship-score{
     border: 3px solid #fffc0c;
@@ -78,12 +77,29 @@ div{
     display: inline-block;
 }
 
+.grid-score td {
+    border: 0px solid #0500d5;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+}
+
 td:hover {
     background-color: gray;
 }
 
 .placed {
     background-color: gray;
+}
+
+.sonarEmpty {
+  background-color: gray;
+}
+
+.sonarFound {
+  background-color: lightgreen;
 }
 
 .occupied {
@@ -94,12 +110,15 @@ td:hover {
     background-color: orange;
 }
 
-.sink {
-    background-color: red;
-}
-
 .miss {
     background-color: blue;
+}
+
+.hitarmr {
+    background-color: blue;
+}
+.sink {
+    background-color: red;
 }
 
 .rotate {
@@ -234,5 +253,3 @@ input[type=checkbox] {
     background-color: #646464;
 
 }
-
-

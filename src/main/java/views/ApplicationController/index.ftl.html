@@ -7,14 +7,20 @@
 <main>
     <div class="score-container">
         <div id="left">
-            <div class="ship-score opponent right"></div>
+            <div class="ship-score opponent right">
+                <table class = "grid-score" id = "right-table-shipscore">
+                </table>
+            </div>
             <div class="text-score opponent right">
                 <div>Hits:  <span id="opponent-hits">0</span></div>
                 <div>Sinks: <span id="opponent-sinks">0</span></div>
             </div>
         </div>
         <div id="right">
-            <div class="ship-score player left"></div>
+            <div class="ship-score player left">
+                <table class = "grid-score" id = "left-table-shipscore">
+                </table>
+            </div>
             <div class="text-score player left">
                 <div>Hits:  <span id="player-hits">0</span></div>
                 <div>Sinks: <span id="player-sinks">0</span></div>
@@ -32,6 +38,7 @@
 </main>
 <button  onclick="location.reload();">Refresh Page</button>
 <button type="button" id="place-ship">Place Ship</button>
+<button type="button" id="use-sonar">Use Sonar</button>
 
 
 <div id="modal-backdrop"></div>

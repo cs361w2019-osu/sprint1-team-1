@@ -1,6 +1,12 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 @SuppressWarnings("unused")
+
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = HealthSquare.class, name = "healthSquare")
+})
 public class Square {
 
 	private int row;
@@ -12,6 +18,11 @@ public class Square {
 	public Square(int row, char column) {
 		this.row = row;
 		this.column = column;
+	}
+
+	public Square(Square s){
+		this.row = s.getRow();
+		this.column = s.getColumn();
 	}
 
 	public char getColumn() {

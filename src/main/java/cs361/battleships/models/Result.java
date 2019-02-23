@@ -5,6 +5,23 @@ public class Result {
 	private Ship ship;
 	private Square loc;
 
+
+	public Result(Result r, AttackStatus newStatus) {
+		this.ship = r.getShip();
+		this.loc = r.getLocation();
+		this.status = newStatus;
+	}
+
+	public Result(){
+
+	}
+
+	public Result(AttackStatus status, Ship ship, Square loc) {
+		this.status = status;
+		this.ship = ship;
+		this.loc = loc;
+	}
+
 	public AttackStatus getResult() {
 		return this.status;
 	}
