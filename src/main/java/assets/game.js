@@ -47,36 +47,44 @@ function makeGrid(table, isPlayer) {
   }
 }
 
-function incrHits(elementId) {
+function incrHits(elementId,hits) {
     if (elementId === 'opponent') {
-        opponentHits.textContent = parseInt(opponentHits.textContent) + 1;
+        opponentHits.textContent = hits;
     } else if (elementId === 'player') {
-        playerHits.textContent = parseInt(playerHits.textContent) + 1;
+        playerHits.textContent = hits;
     } else {
         console.log("elementId for incrHits: ", elementId);
     }
 }
 
-function incrSinks(elementId) {
+function incrSinks(elementId,sinks) {
     if (elementId === 'opponent') {
-        opponentSinks.textContent = parseInt(opponentSinks.textContent) + 1;
+        opponentSinks.textContent = sinks;
     } else if (elementId === 'player') {
-        playerSinks.textContent = parseInt(playerSinks.textContent) + 1;
+        playerSinks.textContent = sinks;
     } else {
         console.log("elementId for incrSinks: ", elementId);
     }
 }
 
 function checkCounters(board, elementId) {
+    var hits = 0, sinks = 0;
+    var arr = [];
     var numAttacks = board.attacks.length;
     if (numAttacks > 0) {
-        if (board.attacks[numAttacks - 1].result === "HIT") {
-            incrHits(elementId);
-        } else if (board.attacks[numAttacks - 1].result === "SUNK") {
-            incrHits(elementId);
-            incrSinks(elementId);
+        for( let i = 0; i < board.attacks.length; i++) {
+            if (board.attacks[i].result === "HIT" || board.attacks[i].result === "SUNK" ) {
+                hits++;
+            }
+            if (board.attacks[i].result === "SUNK" && ! arr.includes(board.attacks[i].ship.length) ) {
+                arr.push( board.attacks[i].ship.length)
+                sinks++;
+            }
         }
+        incrHits(elementId, hits);
+        incrSinks(elementId, sinks);
     }
+
 }
 
 function missingHealthIndices(board, ship) {
@@ -113,6 +121,7 @@ useSonar.addEventListener('click', function(event) {
 });
 
 function markHits(board, elementId, surrenderText) {
+    console.log(board.attacks);
     board.attacks.forEach((attack) => {
         let className;
     if (attack.result === "MISS") {
@@ -130,38 +139,39 @@ function markHits(board, elementId, surrenderText) {
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
 
 
-});
-  shipsArr = board.ships;
+    });
+    shipsArr = board.ships;
 
-  var i;
-  var j;
-  for(i = 0; i < shipsArr.length; i++) {
-    ship = shipsArr[i];
-    indices = missingHealthIndices(board, ship);
-    if(indices.length > 0) {
-      scoreId = "";
-      if(elementId == "player") {
-        console.log(indices);
-        scoreId = "left-table-shipscore";
-      } else {
-        scoreId = "right-table-shipscore";
-      }
-      for(j = 0; j < indices.length; j++) {
-        switch(ship.kind) {
-          case "MINESWEEPER":
-              document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add("hit");
-              break;
-          case "DESTROYER":
-              document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add("hit");
-              break;
-          case "BATTLESHIP":
-              document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add("hit");
-              break;
+    var i;
+    var j;
+    for(i = 0; i < shipsArr.length; i++) {
+        ship = shipsArr[i];
+        indices = missingHealthIndices(board, ship);
+        if(indices.length > 0) {
+            scoreId = "";
+            if(elementId == "player") {
+                console.log(indices);
+                scoreId = "left-table-shipscore";
+            } else {
+                scoreId = "right-table-shipscore";
+            }
+            var classname = (indices.length == ship.length ? "sink" : "hit");
+            for(j = 0; j < indices.length; j++) {
+                switch(ship.kind) {
+                    case "MINESWEEPER":
+                        document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add(classname);
+                        break;
+                    case "DESTROYER":
+                        document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add(classname);
+                        break;
+                    case "BATTLESHIP":
+                        document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add(classname);
+                        break;
+                }
+
+            }
         }
-
-      }
     }
-  }
 }
 
 function drawPlayer() {
@@ -366,9 +376,9 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
-            redrawGrid();
             placedShips++;
             placedShipsList.push(shipList[shipType]);
+            redrawGrid();
             showHideShipModal(false);
             if (placedShips == 3) {
                 isSetup = false;
