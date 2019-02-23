@@ -47,36 +47,44 @@ function makeGrid(table, isPlayer) {
   }
 }
 
-function incrHits(elementId) {
+function incrHits(elementId,hits) {
     if (elementId === 'opponent') {
-        opponentHits.textContent = parseInt(opponentHits.textContent) + 1;
+        opponentHits.textContent = hits;
     } else if (elementId === 'player') {
-        playerHits.textContent = parseInt(playerHits.textContent) + 1;
+        playerHits.textContent = hits;
     } else {
         console.log("elementId for incrHits: ", elementId);
     }
 }
 
-function incrSinks(elementId) {
+function incrSinks(elementId,sinks) {
     if (elementId === 'opponent') {
-        opponentSinks.textContent = parseInt(opponentSinks.textContent) + 1;
+        opponentSinks.textContent = sinks;
     } else if (elementId === 'player') {
-        playerSinks.textContent = parseInt(playerSinks.textContent) + 1;
+        playerSinks.textContent = sinks;
     } else {
         console.log("elementId for incrSinks: ", elementId);
     }
 }
 
 function checkCounters(board, elementId) {
+    var hits = 0, sinks = 0;
+    var arr = [];
     var numAttacks = board.attacks.length;
     if (numAttacks > 0) {
-        if (board.attacks[numAttacks - 1].result === "HIT") {
-            incrHits(elementId);
-        } else if (board.attacks[numAttacks - 1].result === "SUNK") {
-            incrHits(elementId);
-            incrSinks(elementId);
+        for( let i = 0; i < board.attacks.length; i++) {
+            if (board.attacks[i].result === "HIT" || board.attacks[i].result === "SUNK" ) {
+                hits++;
+            }
+            if (board.attacks[i].result === "SUNK" && ! arr.includes(board.attacks[i].ship.length) ) {
+                arr.push( board.attacks[i].ship.length)
+                sinks++;
+            }
         }
+        incrHits(elementId, hits);
+        incrSinks(elementId, sinks);
     }
+
 }
 
 function missingHealthIndices(board, ship) {

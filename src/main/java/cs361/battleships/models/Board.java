@@ -130,7 +130,6 @@ public class Board {
 		}
 
 
-
 		if ( !doesPlayerHaveShipsAlive() ){
 			attackRes.setResult(AttackStatus.SURRENDER);
 			attacks.add(attackRes);
