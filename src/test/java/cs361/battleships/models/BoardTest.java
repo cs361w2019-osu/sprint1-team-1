@@ -33,6 +33,19 @@ public class BoardTest {
     }
 
     @Test
+    public void testSquareSetters() {
+        Square square = new Square();
+        char col = 'A';
+        int row = 1;
+
+        square.setColumn(col);
+        square.setRow(row);
+
+        assertTrue(square.getColumn() == col);
+        assertTrue(square.getRow() == row);
+    }
+
+    @Test
     public void testShipOccupiesSpace() {
         Board board = new Board();
         Square occupiedSquare = new Square(1, 'A');
@@ -112,6 +125,54 @@ public class BoardTest {
         assertTrue(result.getResult() == AttackStatus.HITARMR);
     }
 
+    @Test
+    public void testHealthSquares() {
+        Board board = new Board();
+        Ship minesweeper = new Ship("MINESWEEPER");
+        board.placeShip(minesweeper, 2, 'B', false);
+
+        Ship ship = board.getShips().get(0);
+
+        assertTrue(ship.stillAlive());
+        assertTrue(ship.isAlive());
+
+        board.attack(2, 'B');
+        board.attack(2,'C');
+
+        ship = board.getShips().get(0);
+
+        assertFalse(ship.stillAlive());
+    }
+
+    @Test
+    public void testHealthSquareConstructor() {
+        int health = 2;
+        HealthSquare hs = new HealthSquare(health, false);
+
+        assertTrue(hs.getHealth() == health);
+
+        int row = 1;
+        char col = 'A';
+        hs = new HealthSquare(row, col, health, false);
+        assertTrue(hs.getHealth() == health);
+        assertTrue(hs.getColumn() == col);
+        assertTrue(hs.getRow() == row);
+
+        hs.setCaptain(true);
+        assertTrue(hs.isisCaptain());
+    }
+
+    @Test
+    public void testShipMisc() {
+        Ship ship = new Ship();
+
+        assertTrue(ship.isAlive());
+        assertFalse(ship.isShipVertical());
+
+        ship.sinkShip();
+
+        assertFalse(ship.isAlive());
+    }
 
 
     @Test
@@ -177,15 +238,27 @@ public class BoardTest {
     public void testSonar() {
         Board board = new Board();
         Ship destroyer = new Ship("DESTROYER");
+        Ship minesweeper = new Ship("MINESWEEPER");
 
+        board.placeShip(minesweeper, 1, 'B', false);
         board.placeShip(destroyer, 3, 'A', false);
         board.placeSonar(3, 'B');
 
         Sonar sonar = board.getSonars().get(0);
-        Ship ship = board.getShips().get(0);
+        Ship ship1 = board.getShips().get(0);
+        Ship ship2 = board.getShips().get(1);
+        /*
+        for (Square square : destroyer.getOccupiedSquares()) {
+            assertTrue(sonar.getFoundShips().indexOf(square) != -1);
+        }
+
+        assertTrue(sonar.getFoundShips().indexOf(minesweeper.getOccupiedSquares().get(0)) != -1);
+
+        */
         for(int i = 0; i < sonar.getFoundShips().size(); i++) {
             Square hit = sonar.getFoundShips().get(i);
-            assertTrue(ship.getOccupiedSquares().indexOf(hit) != -1);
+            assertTrue(ship1.getOccupiedSquares().indexOf(hit) != -1
+                    || ship2.getOccupiedSquares().indexOf(hit) != -1);
         }
     }
 
