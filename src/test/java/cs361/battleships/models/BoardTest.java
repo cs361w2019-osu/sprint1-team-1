@@ -273,4 +273,17 @@ public class BoardTest {
         assertTrue(result.getResult() == AttackStatus.SURRENDER);
     }
 
+    @Test
+    public void testSunkShipAttackLogic() {
+        Board board = new Board();
+        Ship destroyer = new Ship("MINESWEEPER");
+        board.placeShip(destroyer, 1, 'B', false);
+
+        board.attack(1, 'C');
+        board.attack(1, 'B');
+        int num = board.getAttacks().size();
+        System.out.println( num );
+        assertTrue(num == 3);
+    }
+
 }
