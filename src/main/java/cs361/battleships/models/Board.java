@@ -90,19 +90,50 @@ public class Board {
 				break;
 		}
 
-		if(result == AttackStatus.SUNK){
+		/*if(result == AttackStatus.SUNK){
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
 				attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
 			}
 		}
 
 		attackRes.setResult(result);
+		attacks.add(attackRes);*/
+
+		attackRes.setResult(result);
 		attacks.add(attackRes);
+
+		if(result == AttackStatus.SUNK){
+			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
+				boolean ifsquareishit = false;
+				for(int i = 0; i < attacks.size(); i++) {
+					System.out.println("ROW: " + Integer.toString(hs.getRow()) + "COLUMN: " + hs.getColumn());
+					System.out.println("ROW: " + Integer.toString(attacks.get(i).getLocation().getRow()) + "COLUMN: " + attacks.get(i).getLocation().getColumn());
+					if(hs.getRow() == attacks.get(i).getLocation().getRow()
+							&& hs.getColumn() == attacks.get(i).getLocation().getColumn()){
+
+						if(ifsquareishit){
+							System.out.println("fuck");
+							attacks.remove(i);
+							i--;
+						}else {
+
+							System.out.println("here");
+							attacks.set(i, new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+							ifsquareishit = true;
+						}
+					}
+				}
+				if(! ifsquareishit) {
+					attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+				}
+			}
+		}
 
 
 
 		if ( !doesPlayerHaveShipsAlive() ){
 			attackRes.setResult(AttackStatus.SURRENDER);
+			attacks.add(attackRes);
 		}
 
 		return attackRes;
