@@ -8,11 +8,13 @@ public class Board {
 	private List<Ship> placedShips;
 	private List<Result> attacks;
 	private List<Sonar> sonars;
+	private int fleetMoves;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
+		fleetMoves = 0;
 		this.placedShips = new ArrayList<>();
 		this.attacks = new ArrayList<>();
 		this.sonars = new ArrayList<>();
@@ -162,6 +164,35 @@ public class Board {
 	    sonars.add(sonar);
 	    return true;
     }
+
+    public int getFleetMoves() {
+		return this.fleetMoves;
+	}
+
+    public void moveShips(char direction) {
+		List<String> movedShips = new ArrayList<>();
+		for(int i = 0; i < placedShips.size(); i++) {
+			for(int j = 0; j < placedShips.size(); j++) {
+				Ship currShip = placedShips.get(j);
+				if (movedShips.contains(currShip.getKind()) == false && currShip.isAlive()) {
+					if (placedShips.get(j).move(direction)) {
+						movedShips.add(placedShips.get(j).getKind());
+					}
+				}
+			}
+		}
+		fleetMoves++;
+	}
+
+	public int shipsAlive() {
+		int alive = 0;
+		for(Ship ship : placedShips) {
+			if(ship.isAlive() == false) {
+				alive++;
+			}
+		}
+		return alive;
+	}
 
 	public List<Ship> getShips() {
 		return placedShips;
