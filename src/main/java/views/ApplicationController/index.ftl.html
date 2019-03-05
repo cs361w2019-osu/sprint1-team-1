@@ -6,7 +6,7 @@
 <body>
 <main>
     <div class="score-container">
-        <div id="left">
+        <div id="right">
             <div class="ship-score opponent right">
                 <table class = "grid-score" id = "right-table-shipscore">
                 </table>
@@ -16,7 +16,7 @@
                 <div>Sinks: <span id="opponent-sinks">0</span></div>
             </div>
         </div>
-        <div id="right">
+        <div id="left">
             <div class="ship-score player left">
                 <table class = "grid-score" id = "left-table-shipscore">
                 </table>
@@ -28,10 +28,27 @@
         </div>
     </div>
     <div class="table-container">
-        <div id="left">
-            <table id="opponent" class="opponent battleGrid right"></table>
-        </div>
         <div id="right">
+            <table id="opponent" class="opponent battleGrid right"></table>
+
+            <div id="move-fleet-modal" class="right">
+                <div class="modal-dialog">
+                    <div class="modal-body">
+                        <button>Test</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+        <div id="left">
             <table id="player" class="player battleGrid left"></table>
         </div>
     </div>
@@ -39,6 +56,7 @@
 <button  onclick="location.reload();">Refresh Page</button>
 <button type="button" id="place-ship">Place Ship</button>
 <button type="button" id="use-sonar">Use Sonar</button>
+<button type="button" id="move-fleet">Move Fleet</button>
 
 
 <div id="modal-backdrop"></div>

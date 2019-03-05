@@ -110,9 +110,6 @@ public class Ship {
 				resp = AttackStatus.HIT;
 			}
 		}
-
-
-
 		return resp;
 	}
 
