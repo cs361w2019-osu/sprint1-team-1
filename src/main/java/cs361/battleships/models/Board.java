@@ -175,7 +175,7 @@ public class Board {
 			for(int j = 0; j < placedShips.size(); j++) {
 				Ship currShip = placedShips.get(j);
 				if (movedShips.contains(currShip.getKind()) == false && currShip.isAlive()) {
-					if (placedShips.get(j).move(direction)) {
+					if (placedShips.get(j).move(direction, placedShips)) {
 						movedShips.add(placedShips.get(j).getKind());
 					}
 				}
