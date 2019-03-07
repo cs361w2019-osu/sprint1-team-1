@@ -19,6 +19,39 @@ var shipList = {
     BATTLESHIP:4
 };
 
+
+function makeMoveFleetModal(){
+    var arrows = document.getElementsByClassName("hoverable");
+    console.log(arrows);
+    Array.prototype.forEach.call(arrows, function(arrow){
+        console.log(arrow);
+        arrow.addEventListener("click", function(){
+            console.log("clicked arrow");
+            if(arrow.textContent === "▲"){
+                console.log("here");
+                sendXhr("POST", "/move_ships", {game:game, direction:'u'}, function(data){
+                    game = data;
+                    console.log("Clicked up");
+                });
+            }
+
+            else if(arrow.textContent === "◀")
+                sendXhr("POST", "/move_ships", {game:game, direction:'l'}, function(data){
+                    game = data;
+                });
+            else if(arrow.textContent === "▶")
+                sendXhr("POST", "/move_ships", {game:game, direction:'r'}, function(data){
+                    game = data;
+                });
+            else if(arrow.textContent === "▼")
+                sendXhr("POST", "/move_ships", {game:game, direction:'d'}, function(data){
+                    game = data;
+                });
+        });
+    });
+
+}
+
 function makeScoreGrid(table) {
 
   var i;
@@ -483,6 +516,7 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("right-table-shipscore"));
     makeScoreGrid(document.getElementById("left-table-shipscore"));
+    makeMoveFleetModal();
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         registerCellListener(place(2));
