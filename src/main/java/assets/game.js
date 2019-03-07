@@ -33,6 +33,7 @@ function makeScoreGrid(table) {
   }
 }
 
+
 function makeGrid(table, isPlayer) {
 
   var i;
@@ -325,6 +326,7 @@ function redrawGrid() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("left-table-shipscore"));
     makeScoreGrid(document.getElementById("right-table-shipscore"));
+
     if (game === undefined) {
         return;
     }
