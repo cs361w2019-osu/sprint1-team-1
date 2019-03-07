@@ -286,4 +286,23 @@ public class BoardTest {
         assertTrue(num == 3);
     }
 
+    @Test
+    public void testMoveShips() {
+        Board board = new Board();
+
+        Ship destroyer = new Ship("DESTROYER");
+        Ship battleship = new Ship("BATTLESHIP");
+
+        board.placeShip(destroyer, 1, 'A', true);
+        board.placeShip(battleship, 1, 'B', true);
+
+        assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 1);
+        assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 1);
+
+        board.moveShips('S');
+
+        assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 2);
+        assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 2);
+    }
+
 }

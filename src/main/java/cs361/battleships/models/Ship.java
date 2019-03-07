@@ -93,6 +93,55 @@ public class Ship {
 		return false;
 	}
 
+	public boolean move(char direction) {
+		boolean moveVertical = false;
+		if(direction == 'N' || direction == 'S') {
+			moveVertical = true;
+		}
+		int linearDirection = 0;
+		if(direction == 'S' || direction == 'E') {
+			linearDirection = 1;
+		} else {
+			linearDirection = -1;
+		}
+
+		if(moveVertical) {
+			for(Square s : occupiedSquares) {
+				if(s.getRow() + linearDirection < 1 || s.getRow() + linearDirection > 10) {
+					System.out.println("can't move to row " + Integer.toString(s.getRow() + linearDirection));
+					return false;
+				}
+			}
+		} else {
+			for(Square s : occupiedSquares) {
+				if(s.getColumn() + linearDirection < 'A' || s.getRow() + linearDirection > 'J') {
+					return false;
+				}
+			}
+		}
+
+		if(moveVertical) {
+			for(int i = 0; i < occupiedSquares.size(); i++) {
+				Square currOcc = occupiedSquares.get(i);
+				HealthSquare currHealth = healthSquares.get(i);
+				currOcc.setRow(currOcc.getRow() + linearDirection);
+				currHealth.setRow(currHealth.getRow() + linearDirection);
+				occupiedSquares.set(i, currOcc);
+				healthSquares.set(i, currHealth);
+			}
+		} else {
+			for(int i = 0; i < occupiedSquares.size(); i++) {
+				Square currOcc = occupiedSquares.get(i);
+				HealthSquare currHealth = healthSquares.get(i);
+				currOcc.setRow(currOcc.getColumn() + linearDirection);
+				currHealth.setRow(currHealth.getColumn() + linearDirection);
+				occupiedSquares.set(i, currOcc);
+				healthSquares.set(i, currHealth);
+			}
+		}
+		return true;
+	}
+
 	public AttackStatus takeDamageFrom(Result attack){
 		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
@@ -110,7 +159,17 @@ public class Ship {
 				resp = AttackStatus.HIT;
 			}
 		}
+
+
+
 		return resp;
+	}
+
+	public boolean isEqual(Ship ship) {
+		if(ship.kind == this.kind) {
+			return true;
+		}
+		return false;
 	}
 
 
