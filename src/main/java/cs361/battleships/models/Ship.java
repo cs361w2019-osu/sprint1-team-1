@@ -93,7 +93,7 @@ public class Ship {
 		return false;
 	}
 
-	public boolean move(char direction) {
+	public boolean move(char direction, List<Ship> ships) {
 		boolean moveVertical = false;
 		if(direction == 'N' || direction == 'S') {
 			moveVertical = true;
@@ -108,14 +108,31 @@ public class Ship {
 		if(moveVertical) {
 			for(Square s : occupiedSquares) {
 				if(s.getRow() + linearDirection < 1 || s.getRow() + linearDirection > 10) {
-					System.out.println("can't move to row " + Integer.toString(s.getRow() + linearDirection));
 					return false;
+				}
+				for(Ship ship : ships) {
+					if(ship.getKind() != this.kind) {
+						for(Square sq : ship.getOccupiedSquares()) {
+							if(s.getRow() + linearDirection == sq.getRow() && s.getColumn() == sq.getColumn()) {
+								return false;
+							}
+						}
+					}
 				}
 			}
 		} else {
 			for(Square s : occupiedSquares) {
 				if(s.getColumn() + linearDirection < 'A' || s.getRow() + linearDirection > 'J') {
 					return false;
+				}
+				for(Ship ship : ships) {
+					if(ship.getKind() != this.kind) {
+						for(Square sq : ship.getOccupiedSquares()) {
+							if((char) (s.getColumn() + linearDirection) == sq.getColumn() && s.getRow() == sq.getRow()) {
+								return false;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -133,8 +150,8 @@ public class Ship {
 			for(int i = 0; i < occupiedSquares.size(); i++) {
 				Square currOcc = occupiedSquares.get(i);
 				HealthSquare currHealth = healthSquares.get(i);
-				currOcc.setRow(currOcc.getColumn() + linearDirection);
-				currHealth.setRow(currHealth.getColumn() + linearDirection);
+				currOcc.setColumn((char) (currOcc.getColumn() + linearDirection));
+				currHealth.setColumn((char) (currHealth.getColumn() + linearDirection));
 				occupiedSquares.set(i, currOcc);
 				healthSquares.set(i, currHealth);
 			}
