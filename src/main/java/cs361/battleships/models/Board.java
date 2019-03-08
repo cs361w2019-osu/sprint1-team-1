@@ -34,7 +34,7 @@ public class Board {
 			if (x + ship.getLength() - 1 > 10 || x < 1) {
 				return false;
 			} else if (ship.getKind().equals("SUBMARINE")){ // checking for submarine special cases
-				if (y - 'A' > 9) { // extra piece sticks out of right side of board
+				if (y > 'I') { // extra piece sticks out of right side of board
 				    System.out.println("cannot place a sub there");
 					return false;
 				} else {

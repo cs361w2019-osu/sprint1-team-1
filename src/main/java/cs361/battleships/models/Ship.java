@@ -31,7 +31,7 @@ public class Ship {
 		} else if (kind.equals("DESTROYER")) {
 			length = 3;
 		} else if (kind.equals("BATTLESHIP") || kind.equals("SUBMARINE")) {
-			length = 4;
+			length = 4; // This is only keeping track of the length of the main body might change later
 		}
 
 		this.alive = true;
@@ -50,9 +50,14 @@ public class Ship {
 			occupiedSquares.add(s);
 			healthSquares.add(new HealthSquare(s));
 		}
-		healthSquares.set(length - 2,
-				new HealthSquare(healthSquares.get(length - 2),
-						kind.equals("MINESWEEPER") ? 1 : 2, true));
+		if (!kind.equals("SUBMARINE")) {
+			healthSquares.set(length - 2,
+					new HealthSquare(healthSquares.get(length - 2),
+					kind.equals("MINESWEEPER") ? 1 : 2, true));
+		} else {
+		    healthSquares.set(length,
+					new HealthSquare(healthSquares.get(length), 2, true));
+		}
 	}
 
 	public int getLength() {

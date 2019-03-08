@@ -198,6 +198,16 @@ public class BoardTest {
         result = board.attack(1, 'B');
 
         assertTrue(result.getResult() == AttackStatus.SUNK);
+
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
+
+        result = board.attack(5, 'D');
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HITARMR);
+
+        result = board.attack(5, 'D');
+        assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
 
