@@ -46,6 +46,7 @@ public class ApplicationController {
         if (result) {
             return Results.json().render(game);
         } else {
+            System.out.println("fuck");
             return Results.badRequest();
         }
     }
