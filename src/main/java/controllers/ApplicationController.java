@@ -50,4 +50,14 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
+
+    public Result moveShips(Context context, MoveShipGameAction g) {
+        Game game = g.getGame();
+        boolean result = game.movePlayer(g.getDirection());
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+        }
+    }
 }

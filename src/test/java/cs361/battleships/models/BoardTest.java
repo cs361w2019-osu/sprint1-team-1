@@ -99,10 +99,12 @@ public class BoardTest {
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
         Ship battleship = new Ship("BATTLESHIP");
+        Ship submarine = new Ship("SUBMARINE");
 
         assertTrue(board.placeShip(minesweeper, 1, 'B', true));
         assertFalse(board.placeShip(destroyer, 1, 'B', false));
         assertFalse(board.placeShip(battleship, 1, 'A', false));
+        assertTrue(board.placeShip(submarine, 1, 'B', true));
     }
 
     @Test
@@ -123,6 +125,25 @@ public class BoardTest {
 
         Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.HITARMR);
+    }
+
+    @Test
+    public void testSubmergedSub() {
+        Board board = new Board();
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 2, 'B', false);
+
+        Result result;
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.MISS_SUB);
+
+        board.getShips().get(0).setSubmerged(false);
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HIT);
     }
 
     @Test
@@ -197,6 +218,17 @@ public class BoardTest {
         Result result;
         result = board.attack(1, 'B');
 
+        assertTrue(result.getResult() == AttackStatus.SUNK);
+
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
+        board.getShips().get(2).setSubmerged(false); // unsubmerge sub so it can be hit
+
+        result = board.attack(5, 'D');
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HITARMR);
+
+        result = board.attack(5, 'D');
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
@@ -284,6 +316,65 @@ public class BoardTest {
         int num = board.getAttacks().size();
         System.out.println( num );
         assertTrue(num == 3);
+    }
+
+    @Test
+    public void testMoveShips() {
+        Board board = new Board();
+
+        Ship destroyer = new Ship("DESTROYER");
+        Ship battleship = new Ship("BATTLESHIP");
+
+        //Testing vertical movement
+        board.placeShip(destroyer, 1, 'A', true);
+        board.placeShip(battleship, 1, 'B', true);
+
+        assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 1);
+        assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 1);
+
+        board.moveShips('S');
+
+        assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 2);
+        assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 2);
+
+        board.moveShips('N');
+
+        assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 1);
+        assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 1);
+
+        //Testing horizontal movement
+        Board board2 = new Board();
+
+        board2.placeShip(destroyer, 1, 'A', true);
+        board2.placeShip(battleship, 1, 'C', true);
+
+        board2.moveShips('W');
+
+        assertTrue(board2.getShips().get(0).getOccupiedSquares().get(0).getColumn() == 'A');
+        assertTrue(board2.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'B');
+
+        board2.moveShips('E');
+
+        assertTrue(board2.getShips().get(0).getOccupiedSquares().get(0).getColumn() == 'B');
+        assertTrue(board2.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'C');
+
+        //Testing overlapping
+        Board board3 = new Board();
+
+        board3.placeShip(destroyer, 1, 'A', true);
+        board3.placeShip(battleship, 1, 'C', true);
+
+        board3.moveShips('W');
+        board3.moveShips('W');
+
+        assertTrue(board3.getShips().get(0).getOccupiedSquares().get(0).getColumn() == 'A');
+        assertTrue(board3.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'B');
+
+        board3.moveShips('E');
+
+        assertTrue(board3.getShips().get(0).getOccupiedSquares().get(0).getColumn() == 'B');
+        assertTrue(board3.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'C');
+
     }
 
 }
