@@ -54,7 +54,7 @@ public class Board {
 					return false;
 				} else {
 					// add extra piece to the occupied squares
-					occupiedSquares.add(new Square(x - 2, (char)(y + 1) ));
+					occupiedSquares.add(new Square(x - 1, (char)(y + 2) ));
 				}
 			}
 			for (int i = 0; i < ship.getLength(); i++) {

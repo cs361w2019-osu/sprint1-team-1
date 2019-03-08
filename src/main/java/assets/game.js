@@ -187,15 +187,20 @@ function drawPlayer() {
           if (currShip.kind === "SUBMARINE") {
               image = document.createElement("img");
               imageScore = document.createElement("img");
-              image.src = "/assets/images/ship_tip.png";
-              imageScore.src = "/assets/images/ship_tip.png";
-              console.log("placing beginning of sub");
+              image.src = "/assets/images/ship_middle.png";
+              imageScore.src = "/assets/images/ship_middle.png";
+              console.log("placing extrusion of sub");
           } else {
               image = document.createElement("img");
               imageScore = document.createElement("img");
               image.src = "/assets/images/ship_tip.png";
               imageScore.src = "/assets/images/ship_tip.png";
           }
+      } else if (j == 1 && currShip.kind === "SUBMARINE") {
+          image = document.createElement("img");
+          imageScore = document.createElement("img");
+          image.src = "/assets/images/ship_tip.png";
+          imageScore.src = "/assets/images/ship_tip.png";
       } else if (!(currShip.kind === "SUBMARINE") && j == currShip.occupiedSquares.length - 1) {
           image = document.createElement("img");
           imageScore = document.createElement("img");
