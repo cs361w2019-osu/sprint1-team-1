@@ -233,8 +233,10 @@ public class Ship {
 			System.out.println("Only Submarines can submerge");
 			return;
 		}
-		for (int i = 0; i < length + 1; i++) {
-			healthSquares.get(i).setIsSubmerged(submerged);
+		for (int i = 0; i < healthSquares.size(); i++) {
+			HealthSquare hs = healthSquares.get(i);
+			hs.setIsSubmerged(submerged);
+			healthSquares.set(i,hs);
 		}
 	}
 
