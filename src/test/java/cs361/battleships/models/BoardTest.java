@@ -99,10 +99,12 @@ public class BoardTest {
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
         Ship battleship = new Ship("BATTLESHIP");
+        Ship submarine = new Ship("SUBMARINE");
 
         assertTrue(board.placeShip(minesweeper, 1, 'B', true));
         assertFalse(board.placeShip(destroyer, 1, 'B', false));
         assertFalse(board.placeShip(battleship, 1, 'A', false));
+        assertTrue(board.placeShip(submarine, 1, 'B', true));
     }
 
     @Test

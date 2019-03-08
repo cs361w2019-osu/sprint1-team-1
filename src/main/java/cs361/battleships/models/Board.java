@@ -62,11 +62,13 @@ public class Board {
 			}
 		}
 		// place if statement around this to allow submarines to placed over other ships
-		for (Square square : occupiedSquares) {
-			for (Ship currentShip : placedShips) {
-				for (Square filledSquare : currentShip.getOccupiedSquares()) {
-					if (square.isEqual(filledSquare)) {
-						return false;
+		if (!ship.getKind().equals("SUBMARINE")) {
+			for (Square square : occupiedSquares) {
+				for (Ship currentShip : placedShips) {
+					for (Square filledSquare : currentShip.getOccupiedSquares()) {
+						if (square.isEqual(filledSquare)) {
+							return false;
+						}
 					}
 				}
 			}
