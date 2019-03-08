@@ -1,6 +1,5 @@
 package cs361.battleships.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -107,7 +106,7 @@ public class Ship {
 	public AttackStatus takeDamageFrom(Result attack){
 		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
-			if (attack.getLocation().isEqual(hs) && hs.getIsSubbmerged()) {
+			if (attack.getLocation().isEqual(hs) && hs.isisSubmerged()) {
 				resp = AttackStatus.MISS_SUB;
 			} else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 2) {
 				hs.setHealth(1);

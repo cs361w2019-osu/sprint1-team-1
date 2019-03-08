@@ -447,6 +447,7 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
+    console.log(JSON.stringify(data));
     req.send(JSON.stringify(data));
 }
 

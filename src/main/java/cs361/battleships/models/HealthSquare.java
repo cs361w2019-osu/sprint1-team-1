@@ -57,7 +57,7 @@ public class HealthSquare extends Square{
         isCaptain = captain;
     }
 
-    public boolean getIsSubbmerged() { return isSubmerged; }
+    public boolean isisSubmerged() { return isSubmerged; }
 
     public void setIsSubmerged(boolean submerged) { isSubmerged = submerged; }
 }
