@@ -30,7 +30,7 @@ public class Ship {
 			length = 2;
 		} else if (kind.equals("DESTROYER")) {
 			length = 3;
-		} else if (kind.equals("BATTLESHIP")) {
+		} else if (kind.equals("BATTLESHIP") || kind.equals("SUBMARINE")) {
 			length = 4;
 		}
 
