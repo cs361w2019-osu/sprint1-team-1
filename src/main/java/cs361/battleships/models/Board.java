@@ -65,19 +65,25 @@ public class Board {
 			}
 		}
 		// place if statement around this to allow submarines to placed over other ships
-		if (!ship.getKind().equals("SUBMARINE")) {
+		Ship newShip = new Ship(ship.getKind());
+		newShip.setLocation(occupiedSquares);
+		if (!newShip.getKind().equals("SUBMARINE") ||newShip.getHealthSquares().get(0).isisSubmerged() == false){
 			for (Square square : occupiedSquares) {
 				for (Ship currentShip : placedShips) {
 					for (Square filledSquare : currentShip.getOccupiedSquares()) {
 						if (square.isEqual(filledSquare)) {
-							return false;
+							if(currentShip.getKind().equals("SUBMARINE")) {
+								if(currentShip.getHealthSquares().get(0).isisSubmerged() == false) {
+									return false;
+								}
+							} else {
+								return false;
+							}
 						}
 					}
 				}
 			}
 		}
-		Ship newShip = new Ship(ship.getKind());
-		newShip.setLocation(occupiedSquares);
 		placedShips.add(newShip);
 		System.out.println("placed: " + ship.getKind());
 		return true;

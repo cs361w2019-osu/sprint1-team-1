@@ -375,6 +375,18 @@ public class BoardTest {
         assertTrue(board3.getShips().get(0).getOccupiedSquares().get(0).getColumn() == 'B');
         assertTrue(board3.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'C');
 
+        //Test moving onto submerged submarine
+        Ship sub = new Ship("SUBMARINE");
+        Board board4 = new Board();
+
+        board4.placeShip(sub, 1, 'A', true);
+        assertTrue(board4.placeShip(destroyer, 1, 'B', true));
+
+        board4.moveShips('W');
+
+        assertTrue(board4.getShips().get(0).getOccupiedSquares().get(1).getColumn() == 'A');
+        assertTrue(board4.getShips().get(1).getOccupiedSquares().get(0).getColumn() == 'A');
+
     }
 
 }
