@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 public class Board {
 
 	private List<Ship> placedShips;
@@ -86,32 +87,38 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		Result attackRes = new Result();
-		attackRes.setResult(AttackStatus.INVALID);
-		attackRes.setLocation(new Square(x,y));
+	    if (doesPLayerHaveOneShipSunk()){
+	        return laser(x,y);
+        }
+	    return bomb(x,y);
+	}
 
-		// Bounds Checking
-		if(x < 0 || x > 10 || y < 'A' || y > 'J'){
-			attackRes.setResult(AttackStatus.INVALID);
-			return attackRes;
-		}
+    public Result bomb(int x, char y) {
+        Result attackRes = new Result();
+        attackRes.setResult(AttackStatus.INVALID);
+        attackRes.setLocation(new Square(x,y));
 
+        // Bounds Checking
+        if(x < 0 || x > 10 || y < 'A' || y > 'J'){
+            attackRes.setResult(AttackStatus.INVALID);
+            return attackRes;
+        }
 
-		for(Result attack : attacks){
-			if(attack.getLocation().isEqual(attackRes.getLocation()) && ( attack.getResult() == AttackStatus.MISS || attack.getResult() == AttackStatus.HIT || attack.getResult() == AttackStatus.SUNK)){
-				return attackRes;
-			}
-		}
+        for(Result attack : attacks){
+            if(attack.getLocation().isEqual(attackRes.getLocation()) && ( attack.getResult() == AttackStatus.MISS || attack.getResult() == AttackStatus.HIT || attack.getResult() == AttackStatus.SUNK)){
+                return attackRes;
+            }
+        }
 
-		// Check if hits enemy ship
-			//If so, does it hit an good part of ship
-		AttackStatus result = AttackStatus.INVALID;
-		for (int i = 0; i < placedShips.size(); i++) {
-			result = placedShips.get(i).takeDamageFrom(attackRes);
-			attackRes.setShip(placedShips.get(i));
-			if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK)
-				break;
-		}
+        // Check if hits enemy ship
+        //If so, does it hit an good part of ship
+        AttackStatus result = AttackStatus.INVALID;
+        for (int i = 0; i < placedShips.size(); i++) {
+            result = placedShips.get(i).takeDamageFrom(attackRes);
+            attackRes.setShip(placedShips.get(i));
+            if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK)
+                break;
+        }
 
 		/*if(result == AttackStatus.SUNK){
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
@@ -122,46 +129,117 @@ public class Board {
 		attackRes.setResult(result);
 		attacks.add(attackRes);*/
 
-		attackRes.setResult(result);
-		attacks.add(attackRes);
-
-		if(result == AttackStatus.SUNK){
-			// un-submerge the submarine
-
-			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
-				boolean ifsquareishit = false;
-				for(int i = 0; i < attacks.size(); i++) {
-					System.out.println("ROW: " + Integer.toString(hs.getRow()) + "COLUMN: " + hs.getColumn());
-					System.out.println("ROW: " + Integer.toString(attacks.get(i).getLocation().getRow()) + "COLUMN: " + attacks.get(i).getLocation().getColumn());
-					if(hs.getRow() == attacks.get(i).getLocation().getRow()
-							&& hs.getColumn() == attacks.get(i).getLocation().getColumn()){
-
-						if(ifsquareishit){
-							System.out.println("fuck");
-							attacks.remove(i);
-							i--;
-						}else {
-
-							System.out.println("here");
-							attacks.set(i, new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
-							ifsquareishit = true;
-						}
-					}
-				}
-				if(! ifsquareishit) {
-					attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
-				}
-			}
-		}
+        attackRes.setResult(result);
+        attacks.add(attackRes);
 
 
-		if ( !doesPlayerHaveShipsAlive() ){
-			attackRes.setResult(AttackStatus.SURRENDER);
-			attacks.add(attackRes);
-		}
+        if(result == AttackStatus.SUNK){
+            for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
+                boolean ifsquareishit = false;
+                for(int i = 0; i < attacks.size(); i++) {
+                    if(hs.getRow() == attacks.get(i).getLocation().getRow()
+                            && hs.getColumn() == attacks.get(i).getLocation().getColumn()){
 
-		return attackRes;
-	}
+                        if(ifsquareishit){
+                            attacks.remove(i);
+                            i--;
+                        }else {
+                            attacks.set(i, new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+                            ifsquareishit = true;
+                        }
+                    }
+                }
+                if(! ifsquareishit) {
+                    attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+                }
+            }
+        }
+
+
+
+        if ( !doesPlayerHaveShipsAlive() ){
+            attackRes.setResult(AttackStatus.SURRENDER);
+            attacks.add(attackRes);
+        }
+
+        return attackRes;
+    }
+
+    public Result laser(int x, char y) {
+        Result attackRes = new Result();
+        attackRes.setResult(AttackStatus.INVALID);
+        attackRes.setLocation(new Square(x,y));
+
+        // Bounds Checking
+        if(x < 0 || x > 10 || y < 'A' || y > 'J'){
+            attackRes.setResult(AttackStatus.INVALID);
+            return attackRes;
+        }
+
+        for(Result attack : attacks){
+            if(attack.getLocation().isEqual(attackRes.getLocation()) && ( attack.getResult() == AttackStatus.MISS || attack.getResult() == AttackStatus.HIT || attack.getResult() == AttackStatus.SUNK)){
+                return attackRes;
+            }
+        }
+
+        // Check if hits enemy ship
+        //If so, does it hit an good part of ship
+        AttackStatus result = AttackStatus.INVALID;
+        for (int i = 0; i < placedShips.size(); i++) {
+            result = placedShips.get(i).takeDamageFrom(attackRes);
+            attackRes.setShip(placedShips.get(i));
+            if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK) {
+
+
+                attackRes.setResult(result);
+                attacks.add(attackRes);
+
+                if (result == AttackStatus.SUNK) {
+                    for (HealthSquare hs : attackRes.getShip().getHealthSquares()) {
+                        boolean ifsquareishit = false;
+                        for (int j = 0; j < attacks.size(); j++) {
+                            System.out.println("ROW: " + Integer.toString(hs.getRow()) + "COLUMN: " + hs.getColumn());
+                            System.out.println("ROW: " + Integer.toString(attacks.get(j).getLocation().getRow()) + "COLUMN: " + attacks.get(j).getLocation().getColumn());
+                            if (hs.getRow() == attacks.get(j).getLocation().getRow()
+                                    && hs.getColumn() == attacks.get(j).getLocation().getColumn()) {
+
+                                if (ifsquareishit) {
+                                    attacks.remove(j);
+                                    i--;
+                                } else {
+
+                                    System.out.println("here");
+                                    attacks.set(j, new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+                                    ifsquareishit = true;
+                                }
+                            }
+                        }
+                        if (!ifsquareishit) {
+                            attacks.add(new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
+                        }
+                    }
+                }
+
+                if ( !doesPlayerHaveShipsAlive() ){
+                    attackRes.setResult(AttackStatus.SURRENDER);
+                    attacks.add(attackRes);
+                    return attackRes;
+                }
+
+            }
+        }
+
+
+
+
+        if(attackRes.getResult() == AttackStatus.INVALID){
+            attackRes.setResult(AttackStatus.MISS);
+            attacks.add(attackRes);
+        }
+
+
+        return attackRes;
+    }
 
 	public boolean doesPlayerHaveShipsAlive() {
 		for (Ship ship : placedShips) {
@@ -170,6 +248,14 @@ public class Board {
 		}
 		return false;
 	}
+
+	private boolean doesPLayerHaveOneShipSunk(){
+        for (Ship ship : placedShips) {
+            if (!ship.isAlive())
+                return true;
+        }
+        return false;
+    }
 
 	public boolean placeSonar(int row, char column) {
 	    if(row< 1 || row > 10) {
