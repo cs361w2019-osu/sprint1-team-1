@@ -31,26 +31,46 @@ public class Board {
 				return false;
 			}
 		}
-		if (isVertical) {
+		System.out.println("y: " + y + " x: " + x);
+		if (isVertical) { // ship is vertical
 			if (x + ship.getLength() - 1 > 10 || x < 1) {
 				return false;
+			} else if (ship.getKind().equals("SUBMARINE")){ // checking for submarine special cases
+				if (y > 'I') { // extra piece sticks out of right side of board
+				    System.out.println("cannot place a sub there");
+					return false;
+				} else {
+					// add extra piece to the occupied squares
+					occupiedSquares.add(new Square(x + 2, (char)(y + 1) ));
+				}
 			}
 			for (int i = 0; i < ship.getLength(); i++) {
 				occupiedSquares.add(new Square(x + i, y));
 			}
-		} else {
+		} else { // ship is horizontal
 			if (y + ship.getLength() - 'A' > 10 || y < 'A') {
 				return false;
+			} else if (ship.getKind().equals("SUBMARINE")) {
+				if (x < 2) { // extra piece sticks out of board
+					System.out.println("cannot place a sub there");
+					return false;
+				} else {
+					// add extra piece to the occupied squares
+					occupiedSquares.add(new Square(x - 1, (char)(y + 2) ));
+				}
 			}
 			for (int i = 0; i < ship.getLength(); i++) {
 				occupiedSquares.add(new Square(x, (char)(y + i)));
 			}
 		}
-		for (Square square : occupiedSquares) {
-			for (Ship currentShip : placedShips) {
-				for (Square filledSquare : currentShip.getOccupiedSquares()) {
-					if (square.isEqual(filledSquare)) {
-						return false;
+		// place if statement around this to allow submarines to placed over other ships
+		if (!ship.getKind().equals("SUBMARINE")) {
+			for (Square square : occupiedSquares) {
+				for (Ship currentShip : placedShips) {
+					for (Square filledSquare : currentShip.getOccupiedSquares()) {
+						if (square.isEqual(filledSquare)) {
+							return false;
+						}
 					}
 				}
 			}
@@ -58,6 +78,7 @@ public class Board {
 		Ship newShip = new Ship(ship.getKind());
 		newShip.setLocation(occupiedSquares);
 		placedShips.add(newShip);
+		System.out.println("placed: " + ship.getKind());
 		return true;
 	}
 
@@ -105,6 +126,8 @@ public class Board {
 		attacks.add(attackRes);
 
 		if(result == AttackStatus.SUNK){
+			// un-submerge the submarine
+
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
 				boolean ifsquareishit = false;
 				for(int i = 0; i < attacks.size(); i++) {

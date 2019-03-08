@@ -99,10 +99,12 @@ public class BoardTest {
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
         Ship battleship = new Ship("BATTLESHIP");
+        Ship submarine = new Ship("SUBMARINE");
 
         assertTrue(board.placeShip(minesweeper, 1, 'B', true));
         assertFalse(board.placeShip(destroyer, 1, 'B', false));
         assertFalse(board.placeShip(battleship, 1, 'A', false));
+        assertTrue(board.placeShip(submarine, 1, 'B', true));
     }
 
     @Test
@@ -123,6 +125,25 @@ public class BoardTest {
 
         Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.HITARMR);
+    }
+
+    @Test
+    public void testSubmergedSub() {
+        Board board = new Board();
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 2, 'B', false);
+
+        Result result;
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.MISS_SUB);
+
+        board.getShips().get(0).setSubmerged(false);
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HIT);
     }
 
     @Test
@@ -197,6 +218,17 @@ public class BoardTest {
         Result result;
         result = board.attack(1, 'B');
 
+        assertTrue(result.getResult() == AttackStatus.SUNK);
+
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
+        board.getShips().get(2).setSubmerged(false); // unsubmerge sub so it can be hit
+
+        result = board.attack(5, 'D');
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HITARMR);
+
+        result = board.attack(5, 'D');
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 

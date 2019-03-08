@@ -121,6 +121,10 @@ td:hover {
     background-color: red;
 }
 
+.misssub {
+    background-color: blue;
+}
+
 .rotate {
     transform: rotate(-90deg);
 }
