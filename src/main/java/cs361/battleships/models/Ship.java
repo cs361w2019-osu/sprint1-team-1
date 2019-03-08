@@ -122,9 +122,15 @@ public class Ship {
 				}
 				for(Ship ship : ships) {
 					if(ship.getKind() != this.kind) {
-						for(Square sq : ship.getOccupiedSquares()) {
+						for(HealthSquare sq : ship.getHealthSquares()) {
 							if(s.getRow() + linearDirection == sq.getRow() && s.getColumn() == sq.getColumn()) {
-								return false;
+								if(ship.getKind() == "SUBMARINE") {
+									if(sq.isisSubmerged() == false) {
+										return false;
+									}
+								} else {
+									return false;
+								}
 							}
 						}
 					}
@@ -137,9 +143,15 @@ public class Ship {
 				}
 				for(Ship ship : ships) {
 					if(ship.getKind() != this.kind) {
-						for(Square sq : ship.getOccupiedSquares()) {
+						for(HealthSquare sq : ship.getHealthSquares()) {
 							if((char) (s.getColumn() + linearDirection) == sq.getColumn() && s.getRow() == sq.getRow()) {
-								return false;
+								if(ship.getKind() == "SUBMARINE") {
+									if(sq.isisSubmerged() == false) {
+										return false;
+									}
+								} else {
+									return false;
+								}
 							}
 						}
 					}
