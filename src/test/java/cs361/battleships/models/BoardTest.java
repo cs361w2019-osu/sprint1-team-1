@@ -128,6 +128,25 @@ public class BoardTest {
     }
 
     @Test
+    public void testSubmergedSub() {
+        Board board = new Board();
+        Ship submarine = new Ship("SUBMARINE");
+        board.placeShip(submarine, 2, 'B', false);
+
+        Result result;
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.MISS_SUB);
+
+        board.getShips().get(0).setSubmerged(false);
+        result = board.attack(2, 'B');
+
+        System.out.println(result.getResult());
+        assertTrue(result.getResult() == AttackStatus.HIT);
+    }
+
+    @Test
     public void testHealthSquares() {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
@@ -203,6 +222,7 @@ public class BoardTest {
 
         Ship submarine = new Ship("SUBMARINE");
         board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
+        board.getShips().get(2).setSubmerged(false); // unsubmerge sub so it can be hit
 
         result = board.attack(5, 'D');
         System.out.println(result.getResult());

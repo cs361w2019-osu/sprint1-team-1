@@ -135,6 +135,8 @@ function markHits(board, elementId, surrenderText) {
         alert(surrenderText);
     } else if(attack.result === "HITARMR"){
         className = "hitarmr";
+    } else if (attack.result === "MISS_SUB") {
+        className = "misssub";
     }
 
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -398,7 +400,7 @@ function cellClick() {
     if (isSetup) {
         console.log("Cell clicked");
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            console.log("placed sship in backend");
+            console.log("placed ship in backend");
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
             placedShips++;

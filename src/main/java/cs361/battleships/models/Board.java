@@ -49,7 +49,7 @@ public class Board {
 			if (y + ship.getLength() - 'A' > 10 || y < 'A') {
 				return false;
 			} else if (ship.getKind().equals("SUBMARINE")) {
-				if (x - 1 < 2) { // extra piece sticks out of board
+				if (x < 2) { // extra piece sticks out of board
 					System.out.println("cannot place a sub there");
 					return false;
 				} else {
@@ -124,6 +124,8 @@ public class Board {
 		attacks.add(attackRes);
 
 		if(result == AttackStatus.SUNK){
+			// un-submerge the submarine
+
 			for(HealthSquare hs : attackRes.getShip().getHealthSquares()){
 				boolean ifsquareishit = false;
 				for(int i = 0; i < attacks.size(); i++) {

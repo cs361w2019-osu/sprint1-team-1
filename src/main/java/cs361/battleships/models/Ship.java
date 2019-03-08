@@ -58,6 +58,12 @@ public class Ship {
 		    healthSquares.set(length,
 					new HealthSquare(healthSquares.get(length), 2, true));
 		}
+
+		if (kind.equals("SUBMARINE")) {
+			for (int i = 0; i < length + 1; i++) {
+				healthSquares.get(i).setIsSubmerged(true);
+			}
+		}
 	}
 
 	public int getLength() {
@@ -101,16 +107,16 @@ public class Ship {
 	public AttackStatus takeDamageFrom(Result attack){
 		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
-			if(attack.getLocation().isEqual(hs) && hs.getHealth() == 2){
+			if (attack.getLocation().isEqual(hs) && hs.getIsSubbmerged()) {
+				resp = AttackStatus.MISS_SUB;
+			} else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 2) {
 				hs.setHealth(1);
 				resp = AttackStatus.HITARMR;
-			}
-			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isisCaptain()){
+			} else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isisCaptain()) {
 				hs.setHealth(0);
 				alive = false;
 				resp = AttackStatus.SUNK;
-			}
-			else if(attack.getLocation().isEqual(hs) && hs.getHealth() == 1){
+			} else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 1) {
 				hs.setHealth(0);
 				resp = AttackStatus.HIT;
 			}
@@ -121,5 +127,14 @@ public class Ship {
 		return resp;
 	}
 
+	public void setSubmerged(boolean submerged) {
+		if (!kind.equals("SUBMARINE")) {
+			System.out.println("Only Submarines can submerge");
+			return;
+		}
+		for (int i = 0; i < length + 1; i++) {
+			healthSquares.get(i).setIsSubmerged(submerged);
+		}
+	}
 
 }
