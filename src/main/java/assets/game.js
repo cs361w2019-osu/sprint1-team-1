@@ -206,30 +206,32 @@ function markHits(board, elementId, surrenderText) {
     var j;
     for(i = 0; i < shipsArr.length; i++) {
         ship = shipsArr[i];
-        indices = missingHealthIndices(board, ship);
-        if(indices.length > 0) {
-            scoreId = "";
-            if(elementId == "player") {
+        if(ship.kind != "SUBMARINE") {
+          indices = missingHealthIndices(board, ship);
+          if(indices.length > 0) {
+              scoreId = "";
+              if(elementId == "player") {
 
-                scoreId = "left-table-shipscore";
-            } else {
-                scoreId = "right-table-shipscore";
-            }
-            var classname = (indices.length == ship.length ? "sink" : "hit");
-            console.log(indices);
-            for(j = 0; j < indices.length; j++) {
-                switch(ship.kind) {
-                    case "MINESWEEPER":
-                        document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add(classname);
-                        break;
-                    case "DESTROYER":
-                        document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add(classname);
-                        break;
-                    case "BATTLESHIP":
-                        document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add(classname);
-                        break;
-                }
+                  scoreId = "left-table-shipscore";
+              } else {
+                  scoreId = "right-table-shipscore";
+              }
+              var classname = (indices.length == ship.length ? "sink" : "hit");
+              console.log(indices);
+              for(j = 0; j < indices.length; j++) {
+                  switch(ship.kind) {
+                      case "MINESWEEPER":
+                          document.getElementById(scoreId).rows[indices[j]].cells[0].classList.add(classname);
+                          break;
+                      case "DESTROYER":
+                          document.getElementById(scoreId).rows[indices[j]].cells[1].classList.add(classname);
+                          break;
+                      case "BATTLESHIP":
+                          document.getElementById(scoreId).rows[indices[j]].cells[2].classList.add(classname);
+                          break;
+                  }
 
+              }
             }
         }
     }
