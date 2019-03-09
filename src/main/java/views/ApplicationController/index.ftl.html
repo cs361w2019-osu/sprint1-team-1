@@ -1,12 +1,12 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
+<@layout.myLayout "Home page">
 
 
 <h1>BATTLESHIP</h1>
 <body>
 <main>
     <div class="score-container">
-        <div id="left">
+        <div id="right">
             <div class="ship-score opponent right">
                 <table class = "grid-score" id = "right-table-shipscore">
                 </table>
@@ -16,7 +16,7 @@
                 <div>Sinks: <span id="opponent-sinks">0</span></div>
             </div>
         </div>
-        <div id="right">
+        <div id="left">
             <div class="ship-score player left">
                 <table class = "grid-score" id = "left-table-shipscore">
                 </table>
@@ -28,10 +28,48 @@
         </div>
     </div>
     <div class="table-container">
-        <div id="left">
-            <table id="opponent" class="opponent battleGrid right"></table>
-        </div>
         <div id="right">
+            <table id="opponent" class="opponent battleGrid right"></table>
+
+            <div id="move-fleet-modal" class="right">
+                <div class="modal-fleet-dialog">
+                    <!--<div class="fleet-modal-body">-->
+                        <!--<button class="modal-fleet-button">Minesweeper</button>-->
+                        <!--<button class="modal-fleet-button">Destroyer</button>-->
+                        <!--<button class="modal-fleet-button">Battleship</button>-->
+                        <!--<button class="modal-fleet-button">Submarine</button>-->
+                    <!--</div>-->
+                    <div class="fleet-modal-body-grid">
+                        <span>Move Fleet</span>
+                        <table id="cardinal-grid">
+                            <tr>
+                                <td></td>
+                                <td><span class="hoverable">&#x25B2;</span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><span class="hoverable">&#x25C0;</span></td>
+                                <td></td>
+                                <td><span  class="hoverable">&#x25B6;</span></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><span  class="hoverable">&#x25BC;</span></td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+        <div id="left">
             <table id="player" class="player battleGrid left"></table>
         </div>
     </div>
@@ -39,10 +77,11 @@
 <button  onclick="location.reload();">Refresh Page</button>
 <button type="button" id="place-ship">Place Ship</button>
 <button type="button" id="use-sonar">Use Sonar</button>
+<button type="button" id="move-fleet">Move Fleet</button>
 
 
-<div id="modal-backdrop"></div>
-<div id="start-phase-modal">
+<div id="modal-backdrop" class="hidden"></div>
+<div id="start-phase-modal" class="hidden">
     <div class="modal-dialog">
 
         <div class="modal-header">
@@ -56,7 +95,7 @@
             <div id="place_destroyer_div"><button id="place_destroyer">Place Destroyer</button></div>
             <div id="place_battleship_div"><button id="place_battleship">Place Battleship</button></div>
             <div id="place_submarine_div"><button id="place_submarine">Place Submarine</button></div>
-
+          
             <div class="checkbox-div"><input type="checkbox" id="is_vertical">Rotate Placement</input></div>
 
         </div>
@@ -69,3 +108,4 @@
     </script>
 </@layout.myLayout>
 </body>
+

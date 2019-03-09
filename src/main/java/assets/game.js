@@ -20,6 +20,55 @@ var shipList = {
     SUBMARINE:5
 };
 
+
+function makeMoveFleetModal(){
+    var arrows = document.getElementsByClassName("hoverable");
+
+    Array.prototype.forEach.call(arrows, function(arrow){
+        arrow.addEventListener("click", function() {
+            console.log("In arrow", arrow);
+            if (arrow.textContent === "▲") {
+                console.log("Up");
+                sendXhr("POST", "/move_ships", {game: game, direction: 'N'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "◀") {
+                sendXhr("POST", "/move_ships", {game: game, direction: 'W'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▶") {
+
+                sendXhr("POST", "/move_ships", {game: game, direction: 'E'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▼"){
+                sendXhr("POST", "/move_ships", {game: game, direction: 'S'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            }
+            document.getElementById('move-fleet-modal').classList.add("hidden");
+            document.getElementById('opponent').classList.remove("hidden");
+        });
+    });
+
+    // Add modal button event stuff
+    modalBody = document.getElementById("move-fleet-modal");
+    modalBody.classList.add("hidden");
+
+    modalButton = document.getElementById('move-fleet');
+    modalButton.disabled = true;
+    modalButton.addEventListener("click", function(){
+       modalBody.classList.remove("hidden");
+       document.getElementById("opponent").classList.add("hidden");
+    });
+}
+
+
+
 function makeScoreGrid(table) {
 
   var i;
@@ -33,6 +82,7 @@ function makeScoreGrid(table) {
       table.appendChild(row);
   }
 }
+
 
 function makeGrid(table, isPlayer) {
 
@@ -85,6 +135,13 @@ function checkCounters(board, elementId) {
         incrHits(elementId, hits);
         incrSinks(elementId, sinks);
     }
+    console.log('sinks', sinks, board);
+    if(sinks >= 2){
+        moveFleet = document.getElementById('move-fleet')
+        moveFleet.disabled = false;
+    }
+
+
 
 }
 
@@ -349,6 +406,7 @@ function redrawGrid() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("left-table-shipscore"));
     makeScoreGrid(document.getElementById("right-table-shipscore"));
+
     if (game === undefined) {
         return;
     }
@@ -510,6 +568,7 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("right-table-shipscore"));
     makeScoreGrid(document.getElementById("left-table-shipscore"));
+    makeMoveFleetModal();
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         registerCellListener(place(2));
