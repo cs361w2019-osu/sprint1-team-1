@@ -159,6 +159,7 @@ function markHits(board, elementId, surrenderText) {
                 scoreId = "right-table-shipscore";
             }
             var classname = (indices.length == ship.length ? "sink" : "hit");
+            console.log(indices);
             for(j = 0; j < indices.length; j++) {
                 switch(ship.kind) {
                     case "MINESWEEPER":
