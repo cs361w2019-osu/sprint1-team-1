@@ -54,7 +54,7 @@ function incrHits(elementId,hits) {
     } else if (elementId === 'player') {
         playerHits.textContent = hits;
     } else {
-        console.log("elementId for incrHits: ", elementId);
+
     }
 }
 
@@ -64,7 +64,7 @@ function incrSinks(elementId,sinks) {
     } else if (elementId === 'player') {
         playerSinks.textContent = sinks;
     } else {
-        console.log("elementId for incrSinks: ", elementId);
+
     }
 }
 
@@ -122,7 +122,7 @@ useSonar.addEventListener('click', function(event) {
 });
 
 function markHits(board, elementId, surrenderText) {
-    console.log(board.attacks);
+
     board.attacks.forEach((attack) => {
         let className;
     if (attack.result === "MISS") {
@@ -153,7 +153,7 @@ function markHits(board, elementId, surrenderText) {
         if(indices.length > 0) {
             scoreId = "";
             if(elementId == "player") {
-                console.log(indices);
+
                 scoreId = "left-table-shipscore";
             } else {
                 scoreId = "right-table-shipscore";
@@ -191,7 +191,6 @@ function drawPlayer() {
               imageScore = document.createElement("img");
               image.src = "/assets/images/ship_middle.png";
               imageScore.src = "/assets/images/ship_middle.png";
-              console.log("placing extrusion of sub");
           } else {
               image = document.createElement("img");
               imageScore = document.createElement("img");
@@ -213,13 +212,13 @@ function drawPlayer() {
           imageScore = document.createElement("img");
           image.src = "/assets/images/flag_tip_white.png";
           imageScore.src = "/assets/images/flag_tip_white.png";
-          console.log("placing end of sub");
+
       } else {
         image = document.createElement("img");
         imageScore = document.createElement("img");
         image.src = "/assets/images/ship_middle.png";
         imageScore.src = "/assets/images/ship_middle.png";
-        console.log("placing middle of ship");
+
       }
 
       if(currShip.shipVertical == false) {
@@ -283,7 +282,7 @@ function drawSonar() {
   var i;
   for(i = 0; i < game.opponentsBoard.sonars.length; i++) {
     var sonar = game.opponentsBoard.sonars[i];
-    console.log("Sonar Row:", sonar.row, "Column:", sonar.column);
+
 
     var left = Math.max(0, sonar.column.charCodeAt(0) - 'A'.charCodeAt(0) - 2);
     var right = Math.min(9, sonar.column.charCodeAt(0) + 2 - 'A'.charCodeAt(0));
@@ -325,18 +324,17 @@ function drawSonar() {
       }
     }
 
-    console.log("Found ships:",sonar.foundShips);
-    console.log("Empty Area:",emptyArea);
+
 
     for(j = 0; j < sonar.foundShips.length; j++) {
       var square = sonar.foundShips[j];
-      console.log("Current found square:", square);
+
       document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarFound");
     }
 
     for(j = 0; j < emptyArea.length; j++) {
       var square = emptyArea[j];
-      console.log("Current empty square:", square);
+
       document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarEmpty");
     }
   }
@@ -398,9 +396,9 @@ function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
-        console.log("Cell clicked");
+
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            console.log("placed ship in backend");
+
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
             placedShips++;
@@ -418,7 +416,7 @@ function cellClick() {
           sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
               sonarUses++; // increment the number of sonar pulses
               // Use the Sonar Pulse
-              console.log("You used the sonar");
+
               game = data;
               redrawGrid();
           });
@@ -447,7 +445,7 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
-    console.log(JSON.stringify(data));
+
     req.send(JSON.stringify(data));
 }
 
