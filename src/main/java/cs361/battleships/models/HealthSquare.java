@@ -60,4 +60,8 @@ public class HealthSquare extends Square{
     public boolean isisSubmerged() { return isSubmerged; }
 
     public void setIsSubmerged(boolean submerged) { isSubmerged = submerged; }
+
+    public boolean isEqual(HealthSquare otherSquare) {
+        return getRow() == otherSquare.getRow() && getColumn() == otherSquare.getColumn();
+    }
 }

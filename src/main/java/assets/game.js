@@ -217,6 +217,7 @@ function markHits(board, elementId, surrenderText) {
                 scoreId = "right-table-shipscore";
             }
             var classname = (indices.length == ship.length ? "sink" : "hit");
+            console.log(indices);
             for(j = 0; j < indices.length; j++) {
                 switch(ship.kind) {
                     case "MINESWEEPER":
@@ -243,7 +244,7 @@ function drawPlayer() {
     for(j = 0; j < currShip.occupiedSquares.length; j++) {
       var square = currShip.occupiedSquares[j];
       var image;
-      if(j == 0) {
+      if(j === 0) {
           if (currShip.kind === "SUBMARINE") {
               image = document.createElement("img");
               imageScore = document.createElement("img");
@@ -255,22 +256,21 @@ function drawPlayer() {
               image.src = "/assets/images/ship_tip.png";
               imageScore.src = "/assets/images/ship_tip.png";
           }
-      } else if (j == 1 && currShip.kind === "SUBMARINE") {
+      } else if (j === 1 && currShip.kind === "SUBMARINE") {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/ship_tip.png";
           imageScore.src = "/assets/images/ship_tip.png";
-      } else if (!(currShip.kind === "SUBMARINE") && j == currShip.occupiedSquares.length - 1) {
+      } else if (!(currShip.kind === "SUBMARINE") && j === currShip.occupiedSquares.length - 1) {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/flag_tip_white.png";
           imageScore.src = "/assets/images/flag_tip_white.png";
-      } else if (currShip.kind === "SUBMARINE" && j == currShip.occupiedSquares.length - 1) {
+      } else if (currShip.kind === "SUBMARINE" && j === currShip.occupiedSquares.length - 1) {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/flag_tip_white.png";
           imageScore.src = "/assets/images/flag_tip_white.png";
-
       } else {
         image = document.createElement("img");
         imageScore = document.createElement("img");
@@ -279,11 +279,18 @@ function drawPlayer() {
 
       }
 
+
       if(currShip.shipVertical == false) {
           image.classList.add("rotate");
       }
 
-      document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+
+      if ( document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].childElementCount === 0 )
+         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      else{
+          document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].removeChild(document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0]);
+          document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      }
       switch(currShip.kind) {
           case "MINESWEEPER":
               document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
