@@ -20,6 +20,55 @@ var shipList = {
     SUBMARINE:5
 };
 
+
+function makeMoveFleetModal(){
+    var arrows = document.getElementsByClassName("hoverable");
+
+    Array.prototype.forEach.call(arrows, function(arrow){
+        arrow.addEventListener("click", function() {
+            console.log("In arrow", arrow);
+            if (arrow.textContent === "▲") {
+                console.log("Up");
+                sendXhr("POST", "/move_ships", {game: game, direction: 'N'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "◀") {
+                sendXhr("POST", "/move_ships", {game: game, direction: 'W'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▶") {
+
+                sendXhr("POST", "/move_ships", {game: game, direction: 'E'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▼"){
+                sendXhr("POST", "/move_ships", {game: game, direction: 'S'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            }
+            document.getElementById('move-fleet-modal').classList.add("hidden");
+            document.getElementById('opponent').classList.remove("hidden");
+        });
+    });
+
+    // Add modal button event stuff
+    modalBody = document.getElementById("move-fleet-modal");
+    modalBody.classList.add("hidden");
+
+    modalButton = document.getElementById('move-fleet');
+    modalButton.disabled = true;
+    modalButton.addEventListener("click", function(){
+       modalBody.classList.remove("hidden");
+       document.getElementById("opponent").classList.add("hidden");
+    });
+}
+
+
+
 function makeScoreGrid(table) {
 
   var i;
@@ -33,6 +82,7 @@ function makeScoreGrid(table) {
       table.appendChild(row);
   }
 }
+
 
 function makeGrid(table, isPlayer) {
 
@@ -54,7 +104,7 @@ function incrHits(elementId,hits) {
     } else if (elementId === 'player') {
         playerHits.textContent = hits;
     } else {
-        console.log("elementId for incrHits: ", elementId);
+
     }
 }
 
@@ -64,7 +114,7 @@ function incrSinks(elementId,sinks) {
     } else if (elementId === 'player') {
         playerSinks.textContent = sinks;
     } else {
-        console.log("elementId for incrSinks: ", elementId);
+
     }
 }
 
@@ -85,6 +135,13 @@ function checkCounters(board, elementId) {
         incrHits(elementId, hits);
         incrSinks(elementId, sinks);
     }
+    console.log('sinks', sinks, board);
+    if(sinks >= 2){
+        moveFleet = document.getElementById('move-fleet')
+        moveFleet.disabled = false;
+    }
+
+
 
 }
 
@@ -122,7 +179,7 @@ useSonar.addEventListener('click', function(event) {
 });
 
 function markHits(board, elementId, surrenderText) {
-    console.log(board.attacks);
+
     board.attacks.forEach((attack) => {
         let className;
     if (attack.result === "MISS") {
@@ -153,7 +210,7 @@ function markHits(board, elementId, surrenderText) {
         if(indices.length > 0) {
             scoreId = "";
             if(elementId == "player") {
-                console.log(indices);
+
                 scoreId = "left-table-shipscore";
             } else {
                 scoreId = "right-table-shipscore";
@@ -186,48 +243,53 @@ function drawPlayer() {
     for(j = 0; j < currShip.occupiedSquares.length; j++) {
       var square = currShip.occupiedSquares[j];
       var image;
-      if(j == 0) {
+      if(j === 0) {
           if (currShip.kind === "SUBMARINE") {
               image = document.createElement("img");
               imageScore = document.createElement("img");
               image.src = "/assets/images/ship_middle.png";
               imageScore.src = "/assets/images/ship_middle.png";
-              console.log("placing extrusion of sub");
           } else {
               image = document.createElement("img");
               imageScore = document.createElement("img");
               image.src = "/assets/images/ship_tip.png";
               imageScore.src = "/assets/images/ship_tip.png";
           }
-      } else if (j == 1 && currShip.kind === "SUBMARINE") {
+      } else if (j === 1 && currShip.kind === "SUBMARINE") {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/ship_tip.png";
           imageScore.src = "/assets/images/ship_tip.png";
-      } else if (!(currShip.kind === "SUBMARINE") && j == currShip.occupiedSquares.length - 1) {
+      } else if (!(currShip.kind === "SUBMARINE") && j === currShip.occupiedSquares.length - 1) {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/flag_tip_white.png";
           imageScore.src = "/assets/images/flag_tip_white.png";
-      } else if (currShip.kind === "SUBMARINE" && j == currShip.occupiedSquares.length - 1) {
+      } else if (currShip.kind === "SUBMARINE" && j === currShip.occupiedSquares.length - 1) {
           image = document.createElement("img");
           imageScore = document.createElement("img");
           image.src = "/assets/images/flag_tip_white.png";
           imageScore.src = "/assets/images/flag_tip_white.png";
-          console.log("placing end of sub");
       } else {
         image = document.createElement("img");
         imageScore = document.createElement("img");
         image.src = "/assets/images/ship_middle.png";
         imageScore.src = "/assets/images/ship_middle.png";
-        console.log("placing middle of ship");
+
       }
+
 
       if(currShip.shipVertical == false) {
           image.classList.add("rotate");
       }
 
-      document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+
+      if ( document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].childElementCount === 0 )
+         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      else{
+          document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].removeChild(document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0]);
+          document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].appendChild(image);
+      }
       switch(currShip.kind) {
           case "MINESWEEPER":
               document.getElementById("left-table-shipscore").rows[j].cells[0].appendChild(imageScore);
@@ -284,7 +346,7 @@ function drawSonar() {
   var i;
   for(i = 0; i < game.opponentsBoard.sonars.length; i++) {
     var sonar = game.opponentsBoard.sonars[i];
-    console.log("Sonar Row:", sonar.row, "Column:", sonar.column);
+
 
     var left = Math.max(0, sonar.column.charCodeAt(0) - 'A'.charCodeAt(0) - 2);
     var right = Math.min(9, sonar.column.charCodeAt(0) + 2 - 'A'.charCodeAt(0));
@@ -326,18 +388,17 @@ function drawSonar() {
       }
     }
 
-    console.log("Found ships:",sonar.foundShips);
-    console.log("Empty Area:",emptyArea);
+
 
     for(j = 0; j < sonar.foundShips.length; j++) {
       var square = sonar.foundShips[j];
-      console.log("Current found square:", square);
+
       document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarFound");
     }
 
     for(j = 0; j < emptyArea.length; j++) {
       var square = emptyArea[j];
-      console.log("Current empty square:", square);
+
       document.getElementById("opponent").rows[square.row - 1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("sonarEmpty");
     }
   }
@@ -352,6 +413,7 @@ function redrawGrid() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("left-table-shipscore"));
     makeScoreGrid(document.getElementById("right-table-shipscore"));
+
     if (game === undefined) {
         return;
     }
@@ -399,9 +461,9 @@ function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
-        console.log("Cell clicked");
+
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
-            console.log("placed ship in backend");
+
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
             placedShips++;
@@ -419,7 +481,7 @@ function cellClick() {
           sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
               sonarUses++; // increment the number of sonar pulses
               // Use the Sonar Pulse
-              console.log("You used the sonar");
+
               game = data;
               redrawGrid();
           });
@@ -448,7 +510,7 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
-    console.log(JSON.stringify(data));
+
     req.send(JSON.stringify(data));
 }
 
@@ -513,6 +575,7 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     makeScoreGrid(document.getElementById("right-table-shipscore"));
     makeScoreGrid(document.getElementById("left-table-shipscore"));
+    makeMoveFleetModal();
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
         registerCellListener(place(2));

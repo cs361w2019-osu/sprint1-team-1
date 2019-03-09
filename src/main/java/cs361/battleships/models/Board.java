@@ -32,13 +32,12 @@ public class Board {
 				return false;
 			}
 		}
-		System.out.println("y: " + y + " x: " + x);
 		if (isVertical) { // ship is vertical
 			if (x + ship.getLength() - 1 > 10 || x < 1) {
 				return false;
 			} else if (ship.getKind().equals("SUBMARINE")){ // checking for submarine special cases
 				if (y > 'I') { // extra piece sticks out of right side of board
-				    System.out.println("cannot place a sub there");
+
 					return false;
 				} else {
 					// add extra piece to the occupied squares
@@ -53,7 +52,7 @@ public class Board {
 				return false;
 			} else if (ship.getKind().equals("SUBMARINE")) {
 				if (x < 2) { // extra piece sticks out of board
-					System.out.println("cannot place a sub there");
+
 					return false;
 				} else {
 					// add extra piece to the occupied squares
@@ -85,7 +84,7 @@ public class Board {
 			}
 		}
 		placedShips.add(newShip);
-		System.out.println("placed: " + ship.getKind());
+
 		return true;
 	}
 
