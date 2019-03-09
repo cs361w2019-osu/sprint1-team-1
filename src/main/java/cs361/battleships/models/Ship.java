@@ -206,14 +206,11 @@ public class Ship {
     public AttackStatus takeDamageFromLaser(Result attack){
         AttackStatus resp = AttackStatus.MISS;
         for(HealthSquare hs : healthSquares){
-            if (attack.getLocation().isEqual(hs) && hs.getHealth() == 2) {
-                hs.setHealth(0);
-                resp = AttackStatus.SUNK;
-            } else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 1 && hs.isisCaptain()) {
+            if (attack.getLocation().isEqual(hs) && hs.isisCaptain()) {
                 hs.setHealth(0);
                 alive = false;
                 resp = AttackStatus.SUNK;
-            } else if (attack.getLocation().isEqual(hs) && hs.getHealth() == 1) {
+            } else if (attack.getLocation().isEqual(hs)) {
                 hs.setHealth(0);
                 resp = AttackStatus.HIT;
             }
