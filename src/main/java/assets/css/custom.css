@@ -44,6 +44,7 @@ body {
     table-layout: fixed;
     border-radius: 10px;
 }
+
 .table-container{
     /*border: 1px solid white;*/
     padding: 0px 5em;
@@ -134,6 +135,59 @@ img {
 }
 
 
+
+#cardinal-grid{
+    background: #060534;
+    border-spacing: 0px;
+    margin: 5px;
+    table-layout: fixed;
+    border-radius: 10px;
+    width: 150px;
+    height: 150px;
+}
+
+#cardinal-grid td {
+    border: 0px solid #0500d5;
+    width: 75px;
+    height: 75px;
+    padding: 0;
+    margin: 0;
+
+
+}
+#cardinal-grid tr {
+    border: 0px solid #0500d5;
+    width: 75px;
+    height: 75px;
+    padding: 0;
+    margin: 0;
+}
+#cardinal-grid td span {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    font-size:60px;
+    color: #d5d30b;
+}
+
+
+
+#cardinal-grid td:hover{
+    background: #060534;
+}
+
+#cardinal-grid td span:hover {
+    cursor: pointer;
+    background: cornflowerblue;
+}
+
+
+
+
+
+
+
 /* Modal Stuff */
 
 
@@ -158,6 +212,28 @@ img {
     overflow: scroll;
     font-family: "impact", serif;
 }
+
+#move-fleet-modal {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    font-family: "impact", serif;
+    /*background-color: rgba(0, 0, 0, 0.85);*/
+}
+
+.modal-fleet-dialog {
+    width: 355px;
+    height: 355px;
+    border-radius: 15px;
+    margin: 5px;
+    border: 3px solid #0044ff;
+    background: #060534;
+    text-align: center;
+}
+
 
 
 .modal-dialog {
@@ -198,6 +274,18 @@ img {
     text-align: center;
 }
 
+.fleet-modal-body {
+    text-align: center;
+    padding-top:8px;
+}
+.fleet-modal-body-grid {
+    margin-top: 5px;
+    text-align: center;
+    display: inline-block;
+    color:#d5d30b;
+    font-size:40px;
+}
+
 .modal-body div {
     padding: 10px;
 }
@@ -212,10 +300,12 @@ input[type=checkbox] {
     padding-bottom: 2px;
     cursor: pointer;
 }
+
 .hidden {
     display: none;
 
 }
+
 
 
 .modal-body button {
@@ -230,7 +320,24 @@ input[type=checkbox] {
     cursor: pointer;
 }
 
+.fleet-modal-body .modal-fleet-button{
+    width: 250px;
+    height: 45px;
+    display: inline-block;
+    font-size:30px;
+    margin: 3px;
+    border-radius: 5px;
+    border: 3px solid #0500d5;
+    background: #060534;
+    color:#d5d30b;
+    font-family: "Impact", serif;
+}
 
+
+.fleet-modal-body .modal-fleet-button:hover{
+    background: cornflowerblue;
+    cursor: pointer;
+}
 
 
 .modal-body button:hover {

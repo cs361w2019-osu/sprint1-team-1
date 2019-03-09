@@ -15,8 +15,12 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-        boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
+    public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubSubmerged) {
+
+        if(!ship.getKind().equals("SUBMARINE")){
+            isSubSubmerged = false;
+        }
+        boolean successful = playersBoard.placeShip(ship, x, y, isVertical,isSubSubmerged);
         if (!successful)
             return false;
 
@@ -24,10 +28,22 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            boolean opponentSubSUbmerged = false;
+            if(!ship.getKind().equals("SUBMARINE")){
+                opponentSubSUbmerged = randSubmerged();
+            }
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), opponentSubSUbmerged);
         } while (!opponentPlacedSuccessfully);
 
         return true;
+    }
+
+    public boolean movePlayer(char direction) {
+        if(opponentsBoard.shipsAlive() >= 2 && playersBoard.getFleetMoves() < 2) {
+            playersBoard.moveShips(direction);
+            return true;
+        }
+        return false;
     }
 
     public boolean placeSonar(int row, char column) {
@@ -38,6 +54,25 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y) {
+        if(playersBoard.shipsAlive() >= 2 && opponentsBoard.getFleetMoves() < 2) {
+            int chance = rand.nextInt(100);
+            if(chance >= 0 && chance <= 29) {
+                int dirChance = rand.nextInt(4);
+                char dir = 'N';
+                switch(dirChance) {
+                    case 0:
+                        dir = 'N';
+                    case 1:
+                        dir = 'E';
+                    case 2:
+                        dir = 'S';
+                    case 3:
+                        dir = 'W';
+                }
+                opponentsBoard.moveShips(dir);
+            }
+        }
+
         Result playerAttack = opponentsBoard.attack(x, y);
         if (playerAttack.getResult() == INVALID) {
             return false;
@@ -66,6 +101,10 @@ public class Game {
     }
 
     private boolean randVertical() {
+        return rand.nextBoolean();
+    }
+
+    private boolean randSubmerged(){
         return rand.nextBoolean();
     }
 }
