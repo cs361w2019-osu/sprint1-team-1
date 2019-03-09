@@ -22,35 +22,51 @@ var shipList = {
 
 function makeMoveFleetModal(){
     var arrows = document.getElementsByClassName("hoverable");
-    console.log(arrows);
+
     Array.prototype.forEach.call(arrows, function(arrow){
-        console.log(arrow);
-        arrow.addEventListener("click", function(){
-            console.log("clicked arrow");
-            if(arrow.textContent === "▲"){
-                console.log("here");
-                sendXhr("POST", "/move_ships", {game:game, direction:'u'}, function(data){
+        arrow.addEventListener("click", function() {
+            console.log("In arrow", arrow);
+            if (arrow.textContent === "▲") {
+                console.log("Up");
+                sendXhr("POST", "/move_ships", {game: game, direction: 'N'}, function (data) {
                     game = data;
-                    console.log("Clicked up");
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "◀") {
+                sendXhr("POST", "/move_ships", {game: game, direction: 'W'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▶") {
+
+                sendXhr("POST", "/move_ships", {game: game, direction: 'E'}, function (data) {
+                    game = data;
+                    redrawGrid();
+                });
+            } else if (arrow.textContent === "▼"){
+                sendXhr("POST", "/move_ships", {game: game, direction: 'S'}, function (data) {
+                    game = data;
+                    redrawGrid();
                 });
             }
-
-            else if(arrow.textContent === "◀")
-                sendXhr("POST", "/move_ships", {game:game, direction:'l'}, function(data){
-                    game = data;
-                });
-            else if(arrow.textContent === "▶")
-                sendXhr("POST", "/move_ships", {game:game, direction:'r'}, function(data){
-                    game = data;
-                });
-            else if(arrow.textContent === "▼")
-                sendXhr("POST", "/move_ships", {game:game, direction:'d'}, function(data){
-                    game = data;
-                });
+            document.getElementById('move-fleet-modal').classList.add("hidden");
+            document.getElementById('opponent').classList.remove("hidden");
         });
     });
 
+    // Add modal button event stuff
+    modalBody = document.getElementById("move-fleet-modal");
+    modalBody.classList.add("hidden");
+
+    modalButton = document.getElementById('move-fleet');
+    modalButton.disabled = true;
+    modalButton.addEventListener("click", function(){
+       modalBody.classList.remove("hidden");
+       document.getElementById("opponent").classList.add("hidden");
+    });
 }
+
+
 
 function makeScoreGrid(table) {
 
@@ -118,6 +134,13 @@ function checkCounters(board, elementId) {
         incrHits(elementId, hits);
         incrSinks(elementId, sinks);
     }
+    console.log('sinks', sinks, board);
+    if(sinks >= 2){
+        moveFleet = document.getElementById('move-fleet')
+        moveFleet.disabled = false;
+    }
+
+
 
 }
 

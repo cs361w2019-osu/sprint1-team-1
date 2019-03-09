@@ -144,7 +144,6 @@ img {
     border-radius: 10px;
     width: 150px;
     height: 150px;
-
 }
 
 #cardinal-grid td {
@@ -301,6 +300,7 @@ input[type=checkbox] {
     padding-bottom: 2px;
     cursor: pointer;
 }
+
 .hidden {
     display: none;
 
@@ -332,6 +332,7 @@ input[type=checkbox] {
     color:#d5d30b;
     font-family: "Impact", serif;
 }
+
 
 .fleet-modal-body .modal-fleet-button:hover{
     background: cornflowerblue;
