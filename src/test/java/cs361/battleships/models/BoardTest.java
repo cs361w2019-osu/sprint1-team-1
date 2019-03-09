@@ -226,9 +226,6 @@ public class BoardTest {
 
         result = board.attack(5, 'D');
         System.out.println(result.getResult());
-        assertTrue(result.getResult() == AttackStatus.HITARMR);
-
-        result = board.attack(5, 'D');
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
@@ -305,6 +302,8 @@ public class BoardTest {
         assertTrue(result.getResult() == AttackStatus.SURRENDER);
     }
 
+
+
     @Test
     public void testSunkShipAttackLogic() {
         Board board = new Board();
@@ -316,6 +315,17 @@ public class BoardTest {
         int num = board.getAttacks().size();
         System.out.println( num );
         assertTrue(num == 3);
+    }
+
+    @Test
+    public void testSubSurrender() {
+        Board board = new Board();
+        Ship sub = new Ship("SUBMARINE");
+        board.placeShip(sub, 1, 'B', false);
+
+        board.attack(1, 'C');
+        Result result = board.attack(1, 'B');
+        assertTrue(result.getResult() == AttackStatus.SURRENDER);
     }
 
     @Test

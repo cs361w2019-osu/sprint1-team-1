@@ -181,7 +181,7 @@ public class Ship {
 		return true;
 	}
 
-	public AttackStatus takeDamageFrom(Result attack){
+	public AttackStatus takeDamageFromBomb(Result attack){
 		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
 			if (attack.getLocation().isEqual(hs) && hs.isisSubmerged()) {
