@@ -16,7 +16,8 @@ var sonarUses = 0;
 var shipList = {
     MINESWEEPER:2,
     DESTROYER:3,
-    BATTLESHIP:4
+    BATTLESHIP:4,
+    SUBMARINE:5
 };
 
 
@@ -191,6 +192,8 @@ function markHits(board, elementId, surrenderText) {
         alert(surrenderText);
     } else if(attack.result === "HITARMR"){
         className = "hitarmr";
+    } else if (attack.result === "MISS_SUB") {
+        className = "misssub";
     }
 
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
@@ -240,20 +243,40 @@ function drawPlayer() {
       var square = currShip.occupiedSquares[j];
       var image;
       if(j == 0) {
-        image = document.createElement("img");
-        imageScore = document.createElement("img");
-        image.src = "/assets/images/ship_tip.png";
-        imageScore.src = "/assets/images/ship_tip.png";
-      } else if (j == currShip.occupiedSquares.length - 1) {
-        image = document.createElement("img");
-        imageScore = document.createElement("img");
-        image.src = "/assets/images/flag_tip_white.png";
-        imageScore.src = "/assets/images/flag_tip_white.png";
+          if (currShip.kind === "SUBMARINE") {
+              image = document.createElement("img");
+              imageScore = document.createElement("img");
+              image.src = "/assets/images/ship_middle.png";
+              imageScore.src = "/assets/images/ship_middle.png";
+              console.log("placing extrusion of sub");
+          } else {
+              image = document.createElement("img");
+              imageScore = document.createElement("img");
+              image.src = "/assets/images/ship_tip.png";
+              imageScore.src = "/assets/images/ship_tip.png";
+          }
+      } else if (j == 1 && currShip.kind === "SUBMARINE") {
+          image = document.createElement("img");
+          imageScore = document.createElement("img");
+          image.src = "/assets/images/ship_tip.png";
+          imageScore.src = "/assets/images/ship_tip.png";
+      } else if (!(currShip.kind === "SUBMARINE") && j == currShip.occupiedSquares.length - 1) {
+          image = document.createElement("img");
+          imageScore = document.createElement("img");
+          image.src = "/assets/images/flag_tip_white.png";
+          imageScore.src = "/assets/images/flag_tip_white.png";
+      } else if (currShip.kind === "SUBMARINE" && j == currShip.occupiedSquares.length - 1) {
+          image = document.createElement("img");
+          imageScore = document.createElement("img");
+          image.src = "/assets/images/flag_tip_white.png";
+          imageScore.src = "/assets/images/flag_tip_white.png";
+          console.log("placing end of sub");
       } else {
         image = document.createElement("img");
         imageScore = document.createElement("img");
         image.src = "/assets/images/ship_middle.png";
         imageScore.src = "/assets/images/ship_middle.png";
+        console.log("placing middle of ship");
       }
 
       if(currShip.shipVertical == false) {
@@ -271,6 +294,9 @@ function drawPlayer() {
           case "BATTLESHIP":
               document.getElementById("left-table-shipscore").rows[j].cells[2].appendChild(imageScore);
               break;
+          /*case "SUBMARINE":
+              document.getElementById("left-table-shipscore").rows[j].cells[3].appendChild(imageScore);
+              break;*/
       }
 
     }
@@ -432,13 +458,14 @@ function cellClick() {
     if (isSetup) {
         console.log("Cell clicked");
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+            console.log("placed ship in backend");
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
             placedShips++;
             placedShipsList.push(shipList[shipType]);
             redrawGrid();
             showHideShipModal(false);
-            if (placedShips == 3) {
+            if (placedShips == 4) {
                 isSetup = false;
                 document.getElementById("place-ship").classList.add("hidden");
                 registerCellListener((e) => {});
@@ -470,7 +497,7 @@ function sendXhr(method, url, data, handler) {
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
             alert("Cannot complete the action");
-            if(placedShips != 3)
+            if(placedShips != 4)
                 showHideShipModal(false);
             return;
         }
@@ -478,6 +505,7 @@ function sendXhr(method, url, data, handler) {
     });
     req.open(method, url);
     req.setRequestHeader("Content-Type", "application/json");
+    console.log(JSON.stringify(data));
     req.send(JSON.stringify(data));
 }
 
@@ -525,6 +553,9 @@ function showHideShipModal(doHide){
                 case 4:
                     document.getElementById("place_battleship_div").style.display = "none";
                     break;
+                case 5:
+                    document.getElementById("place_submarine_div").style.display = "none";
+                    break;
             }
         });
     }
@@ -551,6 +582,10 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
         registerCellListener(place(4));
+    });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+        shipType = "SUBMARINE";
+        registerCellListener(place(5));
     });
     document.getElementById("place-ship").addEventListener("click", function(e) {
         showHideShipModal(false);
