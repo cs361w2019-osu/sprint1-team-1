@@ -387,4 +387,24 @@ public class BoardTest {
 
     }
 
+    @Test
+    public void testAttackSubUnderShip() {
+        Board board = new Board();
+
+        Ship destroyer = new Ship("DESTROYER");
+        Ship submarine = new Ship("SUBMARINE");
+        submarine.setSubmerged(true);
+
+        board.placeShip(destroyer, 1, 'A', true);
+        board.placeShip(submarine, 1, 'A', true);
+
+        board.bomb(1, 'A');
+        assertTrue(board.getShips().get(0).getHealthSquares().get(0).getHealth() == 0);
+        assertTrue(board.getShips().get(1).getHealthSquares().get(1).getHealth() == 1);
+
+        board.laser(1, 'A');
+        assertTrue(board.getShips().get(0).getHealthSquares().get(0).getHealth() == 0);
+        assertTrue(board.getShips().get(1).getHealthSquares().get(1).getHealth() == 0);
+    }
+
 }

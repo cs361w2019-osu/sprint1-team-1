@@ -42,5 +42,5 @@ public class Square {
 	}
 
 	public boolean isEqual(Square otherSquare) {
-		return this.row == otherSquare.row && this.column == otherSquare.column; }
+		return this.row == otherSquare.getRow() && this.column == otherSquare.getColumn(); }
 }
