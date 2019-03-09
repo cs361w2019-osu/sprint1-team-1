@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("Duplicates")
-
 public class Ship {
 
 	@JsonProperty private List<Square> occupiedSquares = new ArrayList<>();
@@ -183,7 +181,7 @@ public class Ship {
 		return true;
 	}
 
-	public AttackStatus takeDamageFromBomb(Result attack){
+	public AttackStatus takeDamageFrom(Result attack){
 		AttackStatus resp = AttackStatus.MISS;
 		for(HealthSquare hs : healthSquares){
 			if (attack.getLocation().isEqual(hs) && hs.isisSubmerged()) {
@@ -206,34 +204,28 @@ public class Ship {
 		return resp;
 	}
 
-    public AttackStatus takeDamageFromLaser(Result attack){
-        AttackStatus resp = AttackStatus.MISS;
-        for(HealthSquare hs : healthSquares){
-            if (attack.getLocation().isEqual(hs) && hs.isisCaptain()) {
-                hs.setHealth(0);
-                alive = false;
-                resp = AttackStatus.SUNK;
-            } else if (attack.getLocation().isEqual(hs)) {
-                hs.setHealth(0);
-                resp = AttackStatus.HIT;
-            }
-        }
-
-
-
-        return resp;
-    }
-
+    public AttackStatus takeDamageFromLaser(Result attack) {
+		AttackStatus resp = AttackStatus.MISS;
+		for (HealthSquare hs : healthSquares) {
+			if (attack.getLocation().isEqual(hs) && hs.isisCaptain()) {
+				hs.setHealth(0);
+				alive = false;
+				resp = AttackStatus.SUNK;
+			} else if (attack.getLocation().isEqual(hs)) {
+				hs.setHealth(0);
+				resp = AttackStatus.HIT;
+			}
+		}
+		return resp;
+	}
 
 	public void setSubmerged(boolean submerged) {
 		if (!kind.equals("SUBMARINE")) {
 			System.out.println("Only Submarines can submerge");
 			return;
 		}
-		for (int i = 0; i < healthSquares.size(); i++) {
-			HealthSquare hs = healthSquares.get(i);
-			hs.setIsSubmerged(submerged);
-			healthSquares.set(i,hs);
+		for (int i = 0; i < length + 1; i++) {
+			healthSquares.get(i).setIsSubmerged(submerged);
 		}
 	}
 

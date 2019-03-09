@@ -120,7 +120,7 @@ public class Board {
         //If so, does it hit an good part of ship
         AttackStatus result = AttackStatus.INVALID;
         for (int i = 0; i < placedShips.size(); i++) {
-            result = placedShips.get(i).takeDamageFromBomb(attackRes);
+            result = placedShips.get(i).takeDamageFrom(attackRes);
             attackRes.setShip(placedShips.get(i));
             if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK)
                 break;
@@ -192,7 +192,7 @@ public class Board {
         //If so, does it hit an good part of ship
         AttackStatus result = AttackStatus.INVALID;
         for (int i = 0; i < placedShips.size(); i++) {
-            result = placedShips.get(i).takeDamageFromLaser(attackRes);
+            result = placedShips.get(i).takeDamageFrom(attackRes);
             attackRes.setShip(placedShips.get(i));
             if(result == AttackStatus.HIT || result == AttackStatus.HITARMR || result == AttackStatus.SUNK) {
 
@@ -204,6 +204,8 @@ public class Board {
                     for (HealthSquare hs : attackRes.getShip().getHealthSquares()) {
                         boolean ifsquareishit = false;
                         for (int j = 0; j < attacks.size(); j++) {
+                            System.out.println("ROW: " + Integer.toString(hs.getRow()) + "COLUMN: " + hs.getColumn());
+                            System.out.println("ROW: " + Integer.toString(attacks.get(j).getLocation().getRow()) + "COLUMN: " + attacks.get(j).getLocation().getColumn());
                             if (hs.getRow() == attacks.get(j).getLocation().getRow()
                                     && hs.getColumn() == attacks.get(j).getLocation().getColumn()) {
 
@@ -212,6 +214,7 @@ public class Board {
                                     i--;
                                 } else {
 
+                                    System.out.println("here");
                                     attacks.set(j, new Result(AttackStatus.SUNK, attackRes.getShip(), new Square(hs.getRow(), hs.getColumn())));
                                     ifsquareishit = true;
                                 }
@@ -222,6 +225,13 @@ public class Board {
                         }
                     }
                 }
+
+                if ( !doesPlayerHaveShipsAlive() ){
+                    attackRes.setResult(AttackStatus.SURRENDER);
+                    attacks.add(attackRes);
+                    return attackRes;
+                }
+
             }
         }
 
@@ -233,13 +243,6 @@ public class Board {
             attacks.add(attackRes);
         }
 
-
-        if ( !doesPlayerHaveShipsAlive() ){
-			System.out.println("Adding surrender to arr");
-            attackRes.setResult(AttackStatus.SURRENDER);
-            attacks.add(attackRes);
-            return attackRes;
-        }
 
         return attackRes;
     }
