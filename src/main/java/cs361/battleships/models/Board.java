@@ -109,10 +109,9 @@ public class Board {
             return attackRes;
         }
 
-		boolean isInvalid = false;
 		for(Result attack : attacks){
 			if(attack.getLocation().isEqual(attackRes.getLocation()) && ( attack.getResult() == AttackStatus.MISS || attack.getResult() == AttackStatus.HIT || attack.getResult() == AttackStatus.SUNK)){
-				isInvalid = true;
+				return attackRes;
 			}
 		}
 
@@ -194,10 +193,9 @@ public class Board {
 				for(HealthSquare hs : sub.getHealthSquares()) {
 					if(hs.equals(attack.getLocation()) && hs.getHealth() > 0 ) {
 						break;
-					} else {
-						isInvalid = true;
 					}
 				}
+				isInvalid = true;
             }
         }
 
@@ -239,9 +237,12 @@ public class Board {
         }
 
         if(isInvalid && attackRes.getResult() == AttackStatus.INVALID){
-            attackRes.setResult(AttackStatus.MISS);
+            attackRes.setResult(AttackStatus.INVALID);
             attacks.add(attackRes);
-        }
+        } else if(attackRes.getResult() == AttackStatus.INVALID) {
+			attackRes.setResult(AttackStatus.MISS);
+			attacks.add(attackRes);
+		}
 
 
         if ( !doesPlayerHaveShipsAlive() ){
