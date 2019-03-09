@@ -223,12 +223,10 @@ public class BoardTest {
         Ship submarine = new Ship("SUBMARINE");
         board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
         board.getShips().get(2).setSubmerged(false); // unsubmerge sub so it can be hit
+        System.out.println(board.getShips().get(2).getHealthSquares().get(0).isisSubmerged());
 
         result = board.attack(5, 'D');
         System.out.println(result.getResult());
-        assertTrue(result.getResult() == AttackStatus.HITARMR);
-
-        result = board.attack(5, 'D');
         assertTrue(result.getResult() == AttackStatus.SUNK);
     }
 
