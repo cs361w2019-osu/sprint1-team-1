@@ -200,9 +200,6 @@ public class Ship {
 				resp = AttackStatus.HIT;
 			}
 		}
-
-
-
 		return resp;
 	}
 
@@ -221,9 +218,6 @@ public class Ship {
                 resp = AttackStatus.HIT;
             }
         }
-
-
-
         return resp;
     }
 
@@ -246,7 +240,4 @@ public class Ship {
 		}
 		return false;
 	}
-
-
-
 }
