@@ -395,8 +395,8 @@ public class BoardTest {
         Ship submarine = new Ship("SUBMARINE");
         submarine.setSubmerged(true);
 
-        board.placeShip(destroyer, 1, 'A', true);
-        board.placeShip(submarine, 1, 'A', true);
+        board.placeShip(destroyer, 1, 'A', true, true);
+        board.placeShip(submarine, 1, 'A', true, true);
 
         board.bomb(1, 'A');
         assertTrue(board.getShips().get(0).getHealthSquares().get(0).getHealth() == 0);

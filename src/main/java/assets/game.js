@@ -136,7 +136,6 @@ function checkCounters(board, elementId) {
         incrHits(elementId, hits);
         incrSinks(elementId, sinks);
     }
-    console.log('sinks', sinks, board);
     if(sinks >= 2){
         moveFleet = document.getElementById('move-fleet')
         moveFleet.disabled = false;
