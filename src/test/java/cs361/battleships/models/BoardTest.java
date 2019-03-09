@@ -9,8 +9,8 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 1, 'J', false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true, false));
+        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 1, 'J', false, false));
     }
 
 
@@ -18,7 +18,7 @@ public class BoardTest {
     public void testShipInBoard() {
         Board board = new Board();
         Ship placedShip = new Ship("MINESWEEPER");
-        board.placeShip(placedShip, 1, 'A', true);
+        board.placeShip(placedShip, 1, 'A', true, true);
         assertTrue(board.getShips().size() == 1);
     }
 
@@ -50,7 +50,7 @@ public class BoardTest {
         Board board = new Board();
         Square occupiedSquare = new Square(1, 'A');
         Ship placedShip = new Ship("MINESWEEPER");
-        board.placeShip(placedShip, occupiedSquare.getRow(), occupiedSquare.getColumn(), true);
+        board.placeShip(placedShip, occupiedSquare.getRow(), occupiedSquare.getColumn(), true, true);
         assertTrue(occupiedSquare.isEqual(board.getShips().get(0).getOccupiedSquares().get(0)));
     }
 
@@ -71,9 +71,9 @@ public class BoardTest {
         Ship destroyer = new Ship("DESTROYER");
         Ship battleship = new Ship("BATTLESHIP");
 
-        board.placeShip(minesweeper, 1, 'A', true);
-        board.placeShip(destroyer, 1, 'B', true);
-        board.placeShip(battleship, 1, 'C', true);
+        board.placeShip(minesweeper, 1, 'A', true, true);
+        board.placeShip(destroyer, 1, 'B', true, true);
+        board.placeShip(battleship, 1, 'C', true, true);
 
         assertTrue(board.getShips().get(0).getOccupiedSquares().get(1).isEqual(new Square(2, 'A')));
         assertTrue(board.getShips().get(1).getOccupiedSquares().get(2).isEqual(new Square(3, 'B')));
@@ -86,8 +86,8 @@ public class BoardTest {
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
 
-        board.placeShip(minesweeper, 1, 'A', true);
-        board.placeShip(destroyer, 2, 'B', false);
+        board.placeShip(minesweeper, 1, 'A', true, true);
+        board.placeShip(destroyer, 2, 'B', false, true);
 
         assertTrue(board.getShips().get(0).getOccupiedSquares().get(1).isEqual(new Square(2, 'A')));
         assertTrue(board.getShips().get(1).getOccupiedSquares().get(2).isEqual(new Square(2, 'D')));
@@ -101,17 +101,17 @@ public class BoardTest {
         Ship battleship = new Ship("BATTLESHIP");
         Ship submarine = new Ship("SUBMARINE");
 
-        assertTrue(board.placeShip(minesweeper, 1, 'B', true));
-        assertFalse(board.placeShip(destroyer, 1, 'B', false));
-        assertFalse(board.placeShip(battleship, 1, 'A', false));
-        assertTrue(board.placeShip(submarine, 1, 'B', true));
+        assertTrue(board.placeShip(minesweeper, 1, 'B', true, true));
+        assertFalse(board.placeShip(destroyer, 1, 'B', false, true));
+        assertFalse(board.placeShip(battleship, 1, 'A', false, true));
+        assertTrue(board.placeShip(submarine, 1, 'B', true, true));
     }
 
     @Test
     public void testHitShip() {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
-        board.placeShip(minesweeper, 1, 'B', false);
+        board.placeShip(minesweeper, 1, 'B', false, true);
 
         Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.HIT);
@@ -121,7 +121,7 @@ public class BoardTest {
     public void testHitShipArmr() {
         Board board = new Board();
         Ship destroyer = new Ship("DESTROYER");
-        board.placeShip(destroyer, 1, 'B', false);
+        board.placeShip(destroyer, 1, 'B', false, true);
 
         Result result = board.attack(1, 'C');
         assertTrue(result.getResult() == AttackStatus.HITARMR);
@@ -131,7 +131,7 @@ public class BoardTest {
     public void testSubmergedSub() {
         Board board = new Board();
         Ship submarine = new Ship("SUBMARINE");
-        board.placeShip(submarine, 2, 'B', false);
+        board.placeShip(submarine, 2, 'B', false, true);
 
         Result result;
         result = board.attack(2, 'B');
@@ -150,7 +150,7 @@ public class BoardTest {
     public void testHealthSquares() {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
-        board.placeShip(minesweeper, 2, 'B', false);
+        board.placeShip(minesweeper, 2, 'B', false, true);
 
         Ship ship = board.getShips().get(0);
 
@@ -200,7 +200,7 @@ public class BoardTest {
     public void testMissShip() {
         Board board = new Board();
         Ship destroyer = new Ship("MINESWEEPER");
-        board.placeShip(destroyer, 1, 'B', false);
+        board.placeShip(destroyer, 1, 'B', false, true);
 
         Result result1 = board.attack(1, 'A');
         Result result2 = board.attack(1, 'D');
@@ -212,8 +212,8 @@ public class BoardTest {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
-        board.placeShip(minesweeper, 1, 'B', false);
-        board.placeShip(destroyer, 3, 'A', false);
+        board.placeShip(minesweeper, 1, 'B', false, true);
+        board.placeShip(destroyer, 3, 'A', false, true);
 
         Result result;
         result = board.attack(1, 'B');
@@ -221,7 +221,7 @@ public class BoardTest {
         assertTrue(result.getResult() == AttackStatus.SUNK);
 
         Ship submarine = new Ship("SUBMARINE");
-        board.placeShip(submarine, 5, 'A', false); // captain square should be at 5 'D'
+        board.placeShip(submarine, 5, 'A', false, true); // captain square should be at 5 'D'
         board.getShips().get(2).setSubmerged(false); // unsubmerge sub so it can be hit
         System.out.println(board.getShips().get(2).getHealthSquares().get(0).isisSubmerged());
 
@@ -236,8 +236,8 @@ public class BoardTest {
         Board board = new Board();
         Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
-        board.placeShip(minesweeper, 1, 'B', false);
-        board.placeShip(destroyer, 3, 'A', false);
+        board.placeShip(minesweeper, 1, 'B', false, true);
+        board.placeShip(destroyer, 3, 'A', false, true);
 
         Result result;
         result = board.attack(3, 'A');
@@ -253,8 +253,8 @@ public class BoardTest {
         Board board = new Board();
         //Ship minesweeper = new Ship("MINESWEEPER");
         Ship destroyer = new Ship("DESTROYER");
-        //board.placeShip(minesweeper, 1, 'B', false);
-        board.placeShip(destroyer, 3, 'A', false);
+        //board.placeShip(minesweeper, 1, 'B', false, true);
+        board.placeShip(destroyer, 3, 'A', false, true);
 
         Result result;
         result = board.attack(3, 'A');
@@ -270,8 +270,8 @@ public class BoardTest {
         Ship destroyer = new Ship("DESTROYER");
         Ship minesweeper = new Ship("MINESWEEPER");
 
-        board.placeShip(minesweeper, 1, 'B', false);
-        board.placeShip(destroyer, 3, 'A', false);
+        board.placeShip(minesweeper, 1, 'B', false, true);
+        board.placeShip(destroyer, 3, 'A', false, true);
         board.placeSonar(3, 'B');
 
         Sonar sonar = board.getSonars().get(0);
@@ -296,7 +296,7 @@ public class BoardTest {
     public void testSurrender() {
         Board board = new Board();
         Ship destroyer = new Ship("MINESWEEPER");
-        board.placeShip(destroyer, 1, 'B', false);
+        board.placeShip(destroyer, 1, 'B', false, true);
 
         board.attack(1, 'C');
         Result result = board.attack(1, 'B');
@@ -307,7 +307,7 @@ public class BoardTest {
     public void testSunkShipAttackLogic() {
         Board board = new Board();
         Ship destroyer = new Ship("MINESWEEPER");
-        board.placeShip(destroyer, 1, 'B', false);
+        board.placeShip(destroyer, 1, 'B', false, true);
 
         board.attack(1, 'C');
         board.attack(1, 'B');
@@ -324,8 +324,8 @@ public class BoardTest {
         Ship battleship = new Ship("BATTLESHIP");
 
         //Testing vertical movement
-        board.placeShip(destroyer, 1, 'A', true);
-        board.placeShip(battleship, 1, 'B', true);
+        board.placeShip(destroyer, 1, 'A', true, true);
+        board.placeShip(battleship, 1, 'B', true, true);
 
         assertTrue(board.getShips().get(0).getOccupiedSquares().get(0).getRow() == 1);
         assertTrue(board.getShips().get(1).getOccupiedSquares().get(0).getRow() == 1);
@@ -343,8 +343,8 @@ public class BoardTest {
         //Testing horizontal movement
         Board board2 = new Board();
 
-        board2.placeShip(destroyer, 1, 'A', true);
-        board2.placeShip(battleship, 1, 'C', true);
+        board2.placeShip(destroyer, 1, 'A', true, true);
+        board2.placeShip(battleship, 1, 'C', true, true);
 
         board2.moveShips('W');
 
@@ -359,8 +359,8 @@ public class BoardTest {
         //Testing overlapping
         Board board3 = new Board();
 
-        board3.placeShip(destroyer, 1, 'A', true);
-        board3.placeShip(battleship, 1, 'C', true);
+        board3.placeShip(destroyer, 1, 'A', true, true);
+        board3.placeShip(battleship, 1, 'C', true, true);
 
         board3.moveShips('W');
         board3.moveShips('W');
@@ -377,8 +377,8 @@ public class BoardTest {
         Ship sub = new Ship("SUBMARINE");
         Board board4 = new Board();
 
-        board4.placeShip(sub, 1, 'A', true);
-        assertTrue(board4.placeShip(destroyer, 1, 'B', true));
+        board4.placeShip(sub, 1, 'A', true, true);
+        assertTrue(board4.placeShip(destroyer, 1, 'B', true, true));
 
         board4.moveShips('W');
 
@@ -395,8 +395,8 @@ public class BoardTest {
         Ship submarine = new Ship("SUBMARINE");
         submarine.setSubmerged(true);
 
-        board.placeShip(destroyer, 1, 'A', true);
-        board.placeShip(submarine, 1, 'A', true);
+        board.placeShip(destroyer, 1, 'A', true, true);
+        board.placeShip(submarine, 1, 'A', true, true);
 
         board.bomb(1, 'A');
         assertTrue(board.getShips().get(0).getHealthSquares().get(0).getHealth() == 0);

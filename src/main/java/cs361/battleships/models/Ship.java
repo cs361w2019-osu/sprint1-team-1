@@ -60,9 +60,11 @@ public class Ship {
 					new HealthSquare(healthSquares.get(length), 2, true));
 		}
 
-		if (kind.equals("SUBMARINE")) {
+		if (kind.equals("SUBMARINE" )) {
 			for (int i = 0; i < length + 1; i++) {
-				healthSquares.get(i).setIsSubmerged(true);
+				HealthSquare hs = healthSquares.get(i);
+				hs.setIsSubmerged(true);
+				healthSquares.set(i,hs);
 			}
 		}
 	}

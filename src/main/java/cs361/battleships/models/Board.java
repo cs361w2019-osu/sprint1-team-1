@@ -24,7 +24,7 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubSubmerged) {
 		List<Square> occupiedSquares = new ArrayList<>();
 		// Check to insure you can only place 1 ship of each kind
 		for ( Ship currentShip : placedShips ) {
@@ -83,8 +83,8 @@ public class Board {
 				}
 			}
 		}
+		newShip.setSubmerged(isSubSubmerged);
 		placedShips.add(newShip);
-
 		return true;
 	}
 

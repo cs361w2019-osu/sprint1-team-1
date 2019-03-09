@@ -3,6 +3,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var sub_submerged;
 var placedShipsList = [];
 var opponentHits = document.getElementById('opponent-hits');
 var opponentSinks = document.getElementById('opponent-sinks');
@@ -135,7 +136,6 @@ function checkCounters(board, elementId) {
         incrHits(elementId, hits);
         incrSinks(elementId, sinks);
     }
-    console.log('sinks', sinks, board);
     if(sinks >= 2){
         moveFleet = document.getElementById('move-fleet')
         moveFleet.disabled = false;
@@ -462,7 +462,7 @@ function cellClick() {
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
 
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, isSubSubmerged: sub_submerged}, function(data) {
 
             game = data;
             game.playersBoard.ships[game.playersBoard.ships.length - 1].shipVertical = vertical;
@@ -519,6 +519,7 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
+        sub_submerged = document.getElementById("is_sub_sunk").checked;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
