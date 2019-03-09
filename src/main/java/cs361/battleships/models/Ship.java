@@ -224,7 +224,6 @@ public class Ship {
 
 	public void setSubmerged(boolean submerged) {
 		if (!kind.equals("SUBMARINE")) {
-			System.out.println("Only Submarines can submerge");
 			return;
 		}
 		for (int i = 0; i < healthSquares.size(); i++) {
