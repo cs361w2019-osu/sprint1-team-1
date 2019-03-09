@@ -222,13 +222,6 @@ public class Board {
                         }
                     }
                 }
-
-                if ( !doesPlayerHaveShipsAlive() ){
-                    attackRes.setResult(AttackStatus.SURRENDER);
-                    attacks.add(attackRes);
-                    return attackRes;
-                }
-
             }
         }
 
@@ -242,6 +235,7 @@ public class Board {
 
 
         if ( !doesPlayerHaveShipsAlive() ){
+			System.out.println("Adding surrender to arr");
             attackRes.setResult(AttackStatus.SURRENDER);
             attacks.add(attackRes);
             return attackRes;
