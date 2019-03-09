@@ -10,6 +10,8 @@ public class PlacementGameAction {
     @JsonProperty private int x;
     @JsonProperty private char y;
     @JsonProperty private boolean isVertical;
+    @JsonProperty private boolean isSubSubmerged;
+
 
     public Game getGame() {
         return game;
@@ -29,5 +31,9 @@ public class PlacementGameAction {
 
     public boolean isVertical() {
         return isVertical;
+    }
+
+    public boolean isSubSubmerged() {
+        return isSubSubmerged;
     }
 }
